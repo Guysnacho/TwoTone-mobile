@@ -30,6 +30,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
       </View>
 
       <View style={[$bottomContainer, $bottomContainerInsets]}>
+        <Button onTouchEnd={() => navigate({ key: "NewWelcome", name: "NewWelcome" })}>New Welcome</Button>
         <Button onTouchEnd={() => navigate({ key: "Profile", name: "Profile" })}>Profile Page</Button>
         <Text tx="welcomeScreen.postscript" size="md" />
       </View>

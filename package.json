@@ -4,9 +4,9 @@
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "react-native start",
-    "ios": "react-native run-ios",
-    "android": "react-native run-android --active-arch-only",
+    "start": "TAMAGUI_TARGET=native react-native start",
+    "ios": "TAMAGUI_TARGET=native react-native run-ios",
+    "android": "TAMAGUI_TARGET=native react-native run-android --active-arch-only",
     "compile": "tsc --noEmit -p . --pretty",
     "format": "prettier --write \"app/**/*.{js,jsx,json,md,ts,tsx}\"",
     "lint": "eslint index.js App.js app test --fix --ext .js,.ts,.tsx && npm run format",
@@ -16,16 +16,16 @@
     "test:maestro": "maestro test .maestro/FavoritePodcast.yaml",
     "adb": "adb reverse tcp:9090 tcp:9090 && adb reverse tcp:3000 tcp:3000 && adb reverse tcp:9001 tcp:9001 && adb reverse tcp:8081 tcp:8081",
     "postinstall": "node ./bin/postInstall",
-    "bundle:ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
-    "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "bundle:ios": "TAMAGUI_TARGET=native react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
+    "bundle:android": "TAMAGUI_TARGET=native react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "release:ios": "echo 'Not implemented yet: release:ios. Use Xcode. More info: https://reactnative.dev/docs/next/publishing-to-app-store'",
     "release:android": "cd android && rm -rf app/src/main/res/drawable-* && ./gradlew assembleRelease && cd - && echo 'APK generated in ./android/app/build/outputs/apk/release/app-release.apk'",
-    "clean": "npx react-native-clean-project",
-    "clean-all": "npx react-native clean-project-auto",
-    "expo:start": "expo start",
-    "expo:android": "expo start --android",
-    "expo:ios": "expo start --ios",
-    "expo:web": "expo start --web"
+    "clean": "TAMAGUI_TARGET=native npx react-native-clean-project",
+    "clean-all": "TAMAGUI_TARGET=native npx react-native clean-project-auto",
+    "expo:start": "TAMAGUI_TARGET=native expo start",
+    "expo:android": "TAMAGUI_TARGET=native expo start --android",
+    "expo:ios": "TAMAGUI_TARGET=native expo start --ios",
+    "expo:web": "TAMAGUI_TARGET=native expo start --web"
   },
   "overrides": {
     "react-error-overlay": "6.0.9"
@@ -37,7 +37,11 @@
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.0.2",
+    "@tamagui/babel-plugin": "^1.35.12",
+    "@tamagui/shorthands": "^1.35.12",
+    "@tamagui/themes": "^1.35.12",
     "apisauce": "2.1.5",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "date-fns": "^2.29.2",
     "expo": "^48.0.15",
     "expo-application": "~5.1.1",
@@ -63,7 +67,8 @@
     "react-native-screens": "~3.20.0",
     "reactotron-mst": "3.1.4",
     "reactotron-react-js": "^3.3.7",
-    "reactotron-react-native": "5.0.3"
+    "reactotron-react-native": "5.0.3",
+    "tamagui": "^1.35.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
