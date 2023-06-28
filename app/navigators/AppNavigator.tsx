@@ -33,9 +33,10 @@ import { colors } from "app/theme"
  */
 export type AppStackParamList = {
   Welcome: undefined
-  Profile: undefined
   // 🔥 Your screens go here
-  NewWelcome: undefined
+  Landing: undefined
+  Home: undefined
+  Profile: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -61,7 +62,8 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
           <Stack.Screen name="Profile" component={Screens.ProfileScreen} />
       {/** 🔥 Your screens go here */}
-      <Stack.Screen name="NewWelcome" component={Screens.NewWelcomeScreen} />
+      <Stack.Screen name="Landing" component={Screens.LandingScreen} />
+      <Stack.Screen name="Home" component={Screens.HomeScreen} />
 			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

@@ -4,13 +4,13 @@ import { ViewStyle } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { AppStackScreenProps } from "app/navigators"
 import { Screen } from "app/components"
-import { Button, XStack, YStack } from "tamagui"
+import { Button, YStack } from "tamagui"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
-type NewWelcomeScreenProps = NativeStackScreenProps<AppStackScreenProps<"NewWelcome">>
+type LandingScreenProps = NativeStackScreenProps<AppStackScreenProps<"Landing">>
 
-export const NewWelcomeScreen: FC<NewWelcomeScreenProps> = observer(function NewWelcomeScreen() {
+export const LandingScreen: FC<LandingScreenProps> = observer(function LandingScreen() {
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
