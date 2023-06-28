@@ -1,24 +1,33 @@
-import React, { FC } from "react"
-import { observer } from "mobx-react-lite"
-import { ViewStyle } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { AppStackScreenProps } from "app/navigators"
 import { Screen } from "app/components"
-import { Button, YStack } from "tamagui"
+import { AppStackScreenProps } from "app/navigators"
+import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
+import { observer } from "mobx-react-lite"
+import React, { FC } from "react"
+import { ViewStyle } from "react-native"
+import { Button, Image, View, YStack, Text } from "tamagui"
+import welcomeLogo from "../../assets/images/logo-filled.png"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
 type LandingScreenProps = NativeStackScreenProps<AppStackScreenProps<"Landing">>
 
 export const LandingScreen: FC<LandingScreenProps> = observer(function LandingScreen() {
+  const $topContainerInsets = useSafeAreaInsetsStyle(["top"])
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
   return (
-    <Screen preset="scroll">
-      <YStack justifyContent="center">
+    <Screen style={$topContainerInsets} preset="scroll">
+      <View>
+        <Image source={welcomeLogo} marginHorizontal="auto" />
+      </View>
+      <Text color="forestgreen" textAlign="center" marginVertical={5}>
+        Listen with us 🎵
+      </Text>
+      <YStack margin={10} space>
         <Button alignSelf="center" size="$3">
           Login
         </Button>
