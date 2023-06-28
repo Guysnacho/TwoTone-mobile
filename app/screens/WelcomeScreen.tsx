@@ -11,7 +11,7 @@ import welcomeLogo from "../../assets/images/logo.png"
 import welcomeFace from "../../assets/images/welcome-face.png"
 import { View, Image } from "tamagui"
 
-type WelcomeScreenProps = AppStackScreenProps<"NewWelcome">
+type WelcomeScreenProps = AppStackScreenProps<"Welcome">
 
 export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen() {
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
