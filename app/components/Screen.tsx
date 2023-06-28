@@ -9,9 +9,9 @@ import {
   ScrollView,
   ScrollViewProps,
   StyleProp,
-  View,
   ViewStyle,
 } from "react-native"
+import { View } from "tamagui"
 import { colors } from "../theme"
 import { ExtendedEdge, useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 
