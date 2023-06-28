@@ -7,7 +7,7 @@ import { Screen, Text } from "app/components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
-interface ProfileScreenProps extends NativeStackScreenProps<AppStackScreenProps<"Profile">> {}
+type ProfileScreenProps = NativeStackScreenProps<AppStackScreenProps<"Profile">>
 
 export const ProfileScreen: FC<ProfileScreenProps> = observer(function ProfileScreen() {
   // Pull in one of our MST stores

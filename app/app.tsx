@@ -23,8 +23,8 @@ import { customFontsToLoad } from "./theme"
 import { setupReactotron } from "./services/reactotron"
 import Config from "./config"
 
-import { TamaguiProvider } from 'tamagui'
-import TamaConfig from './tamagui.config'
+import { TamaguiProvider } from "tamagui"
+import TamaConfig from "./tamagui.config"
 
 // Set up Reactotron, which is a free desktop app for inspecting and debugging
 // React Native apps. Learn more here: https://github.com/infinitered/reactotron
@@ -106,8 +106,8 @@ function App(props: AppProps) {
 
   // otherwise, we're ready to render the app
   return (
-    <TamaguiProvider config={TamaConfig}>
-      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <TamaguiProvider config={TamaConfig}>
         <ErrorBoundary catchErrors={Config.catchErrors}>
           <Suspense>
             <AppNavigator
@@ -117,8 +117,8 @@ function App(props: AppProps) {
             />
           </Suspense>
         </ErrorBoundary>
-      </SafeAreaProvider>
-    </TamaguiProvider>
+      </TamaguiProvider>
+    </SafeAreaProvider>
   )
 }
 

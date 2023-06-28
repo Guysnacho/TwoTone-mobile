@@ -1,35 +1,36 @@
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
-import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import { ImageStyle, TextStyle, ViewStyle } from "react-native"
 import { Button, Text } from "../components"
 import { isRTL } from "../i18n"
 import { colors, spacing } from "../theme"
 import { useSafeAreaInsetsStyle } from "../utils/useSafeAreaInsetsStyle"
 import { AppStackScreenProps, navigate } from "app/navigators"
 
-const welcomeLogo = require("../../assets/images/logo.png")
-const welcomeFace = require("../../assets/images/welcome-face.png")
+import welcomeLogo from "../../assets/images/logo.png"
+import welcomeFace from "../../assets/images/welcome-face.png"
+import { View, Image } from "tamagui"
 
-interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
+type WelcomeScreenProps = AppStackScreenProps<"NewWelcome">
 
 export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen() {
   const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
 
   return (
-    <View style={$container}>
-      <View style={$topContainer}>
-        <Image style={$welcomeLogo} source={welcomeLogo} resizeMode="contain" />
+    <View /*style={$container}*/>
+      <View /*style={$topContainer}*/>
+        <Image /*style={$welcomeLogo}*/ source={welcomeLogo} resizeMode="contain" />
         <Text
           testID="welcome-heading"
-          style={$welcomeHeading}
+          /*style={$welcomeHeading}*/
           tx="welcomeScreen.readyForLaunch"
           preset="heading"
         />
         <Text tx="welcomeScreen.exciting" preset="subheading" />
-        <Image style={$welcomeFace} source={welcomeFace} resizeMode="contain" />
+        <Image /*style={$welcomeFace}*/ source={welcomeFace} resizeMode="contain" />
       </View>
 
-      <View style={[$bottomContainer, $bottomContainerInsets]}>
+      <View /*style={[$bottomContainer, $bottomContainerInsets]}*/>
         <Button onTouchEnd={() => navigate({ key: "NewWelcome", name: "NewWelcome" })}>New Welcome</Button>
         <Button onTouchEnd={() => navigate({ key: "Profile", name: "Profile" })}>Profile Page</Button>
         <Text tx="welcomeScreen.postscript" size="md" />
