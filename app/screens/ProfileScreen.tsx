@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { Screen } from "app/components"
+import { Fab, Screen } from "app/components"
 import { AppStackScreenProps } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
@@ -24,28 +24,31 @@ export const ProfileScreen: FC<ProfileScreenProps> = observer(function ProfileSc
   // Pull in navigation via hook
   // const navigation = useNavigation()
   return (
-    <Screen style={$topContainerInsets} preset="scroll">
-      <YStack space>
-        <Image source={welcomeLogo} marginHorizontal="auto" />
-        <Text color="forestgreen" textAlign="center" marginVertical={5}>
-          Tunji
-        </Text>
-        <Text color="forestgreen" textAlign="center" marginVertical={5}>
-          @guysnacho
-        </Text>
-      </YStack>
-      <Group orientation="horizontal">
-        <Group.Item>
-          <Button>Lists</Button>
-        </Group.Item>
-        <Group.Item>
-          <Button>SOTD</Button>
-        </Group.Item>
-        <Group.Item>
-          <Button>Reviews</Button>
-        </Group.Item>
-      </Group>
-    </Screen>
+    <>
+      <Screen style={$topContainerInsets} preset="scroll">
+        <YStack space>
+          <Image source={welcomeLogo} marginHorizontal="auto" />
+          <Text color="forestgreen" textAlign="center" marginVertical={5}>
+            Tunji
+          </Text>
+          <Text color="forestgreen" textAlign="center" marginVertical={5}>
+            @guysnacho
+          </Text>
+        </YStack>
+        <Group orientation="horizontal">
+          <Group.Item>
+            <Button>Lists</Button>
+          </Group.Item>
+          <Group.Item>
+            <Button>SOTD</Button>
+          </Group.Item>
+          <Group.Item>
+            <Button>Reviews</Button>
+          </Group.Item>
+        </Group>
+      </Screen>
+      <Fab page="profile" />
+    </>
   )
 })
 
