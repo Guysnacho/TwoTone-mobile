@@ -37,7 +37,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
           </View>
         </View>
       </Screen>
-      <Fab page="home" />
+      <Fab page="Home" />
     </>
   )
 })

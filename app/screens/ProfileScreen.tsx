@@ -37,17 +37,17 @@ export const ProfileScreen: FC<ProfileScreenProps> = observer(function ProfileSc
         </YStack>
         <Group orientation="horizontal">
           <Group.Item>
-            <Button>Lists</Button>
+            <Button size={1}>Lists</Button>
           </Group.Item>
           <Group.Item>
-            <Button>SOTD</Button>
+            <Button size={1}>SOTD</Button>
           </Group.Item>
           <Group.Item>
-            <Button>Reviews</Button>
+            <Button size={1}>Reviews</Button>
           </Group.Item>
         </Group>
       </Screen>
-      <Fab page="profile" />
+      <Fab page="Profile" />
     </>
   )
 })

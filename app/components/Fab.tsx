@@ -1,13 +1,19 @@
-import { Calendar, Edit, Plus, User2, X } from "@tamagui/lucide-icons"
+import { Calendar, Home, Plus, User2, X } from "@tamagui/lucide-icons"
+import { navigate } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Button, YStack, styled } from "tamagui"
 
+export interface FabProps {
+  page: "Home" | "Profile"
+}
+
 /**
- * Describe your component here
+ * Floating action button for navigating the app. I don't want a navbar 😌
+ * @todo - Add animations for expansion and closing
  */
-export const Fab = observer((props: { page: string }) => {
+export const Fab = observer((props: FabProps) => {
   const $containerInsets = useSafeAreaInsetsStyle(["bottom", "right"])
   const [open, setOpen] = React.useState(false)
 
@@ -28,20 +34,22 @@ export const Fab = observer((props: { page: string }) => {
       <FabBubble // Profile or Home Page
         style={$containerInsets}
         display={open ? "flex" : "none"}
-        onPress={() => {
-          setOpen(!open)
-          console.log(props.page)
+        onTouchEnd={() => {
+          navigate({
+            key: props.page === "Profile" ? "Home" : "Profile",
+            name: props.page === "Profile" ? "Home" : "Profile",
+          })
         }}
       >
-        {props.page !== "profile" ? (
+        {props.page === "Home" ? (
           <User2
             style={{
               top: "50%",
             }}
           />
         ) : null}
-        {props.page !== "home" ? (
-          <Edit
+        {props.page === "Profile" ? (
+          <Home
             style={{
               top: "50%",
             }}
