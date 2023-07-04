@@ -18,7 +18,7 @@ export const Fab = observer((props: FabProps) => {
   const [open, setOpen] = React.useState(false)
 
   return (
-    <YStack flexDirection="column" flex={1} justifyContent="center" alignItems="flex-end" space>
+    <YStack style={$containerInsets} flexDirection="column" flex={1} justifyContent="center" alignItems="flex-end" space>
       {/* <FabBubble // Search
             style={$containerInsets}
             display={open ? "flex" : "none"}
