@@ -1,4 +1,5 @@
 import { shorthands } from "@tamagui/shorthands"
+import { createFiraMonoFont } from "@tamagui/font-fira-mono"
 
 import { themes, tokens } from "@tamagui/themes"
 
@@ -12,35 +13,29 @@ export default createTamagui({
 
   fonts: {
     default: createFont({
-      family: "Inter, Helvetica, Arial, sans-serif",
-      size: {
-        1: 12,
-        2: 14,
-        3: 15,
-        // ...
-      },
-      lineHeight: {
-        1: 17,
-        2: 22,
-        3: 25,
-        // ...
-      },
+      family: "MoiraiOne",
       weight: {
-        4: "300",
-        6: "600",
+        1: "500",
       },
-      letterSpacing: {
-        4: 0,
-        8: -1,
+      size: {
+        1: 11,
+        2: 12,
+        3: 13,
+        4: 14,
+        5: 16,
+        6: 18,
+        7: 20,
+        8: 22,
+        9: 30,
+        10: 42,
+        11: 52,
+        12: 62,
+        13: 72,
+        14: 92,
+        15: 114,
+        16: 124,
       },
-
-      // for native only, alternate family based on weight/style
-      face: {
-        // pass in weights as keys
-        700: { normal: "InterBold", italic: "InterBold-Italic" },
-        800: { normal: "InterBold", italic: "InterBold-Italic" },
-        900: { normal: "InterBold", italic: "InterBold-Italic" },
-      },
+      sizeLineHeight: (x: number) => x * 1.5,
     }),
   },
 })
