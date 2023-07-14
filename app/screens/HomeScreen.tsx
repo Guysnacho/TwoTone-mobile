@@ -1,12 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { Plus } from "@tamagui/lucide-icons"
 import { Fab, Screen } from "app/components"
 import { AppStackScreenProps } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
-import { Text, View } from "react-native-ui-lib"
-import { Button } from "tamagui"
+import { Text, View } from "tamagui"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -24,7 +22,7 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
   return (
     <>
       <Screen style={$topContainerInsets} preset="scroll">
-        <View flex center>
+        <View display="flex" alignContent="center">
           <View>
             <Text color="forestgreen" textAlign="center" marginVertical={5}>
               Listen with us 🎵

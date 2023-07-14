@@ -79,7 +79,7 @@ function App(props: AppProps) {
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
 
-  const [areFontsLoaded] = useFonts(customFontsToLoad) // Todo - Add Moirai and Scope One
+  const [areFontsLoaded] = useFonts(customFontsToLoad)
 
   const { rehydrated } = useInitialRootStore(() => {
     // This runs after the root store has been initialized and rehydrated.

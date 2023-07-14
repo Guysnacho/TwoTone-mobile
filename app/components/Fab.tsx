@@ -18,14 +18,19 @@ export const Fab = observer((props: FabProps) => {
   const [open, setOpen] = React.useState(false)
 
   return (
-    <YStack style={$containerInsets} flexDirection="column" flex={1} justifyContent="center" alignItems="flex-end" space>
+    <YStack
+      style={$containerInsets}
+      flexDirection="column"
+      flex={1}
+      justifyContent="center"
+      alignItems="flex-end"
+      marginHorizontal={3}
+      space
+    >
       {/* <FabBubble // Search
             style={$containerInsets}
             display={open ? "flex" : "none"}
-            onPress={() => {
-              setOpen(!open)
-              console.log(props.page)
-            }}
+            onPress={() => setOpen(!open)}
           >
             <Search style={{
           top: "50%"
@@ -34,12 +39,12 @@ export const Fab = observer((props: FabProps) => {
       <FabBubble // Profile or Home Page
         style={$containerInsets}
         display={open ? "flex" : "none"}
-        onTouchEnd={() => {
+        onTouchEnd={() =>
           navigate({
             key: props.page === "Profile" ? "Home" : "Profile",
             name: props.page === "Profile" ? "Home" : "Profile",
           })
-        }}
+        }
       >
         {props.page === "Home" ? (
           <User2
@@ -59,10 +64,7 @@ export const Fab = observer((props: FabProps) => {
       <FabBubble // Song of the day
         style={$containerInsets}
         display={open ? "flex" : "none"}
-        onPress={() => {
-          setOpen(!open)
-          console.log(props.page)
-        }}
+        onPress={() => setOpen(!open)}
       >
         <Calendar
           style={{
@@ -80,10 +82,7 @@ export const Fab = observer((props: FabProps) => {
         size={3}
         circular
         noTextWrap
-        onPress={() => {
-          setOpen(!open)
-          console.log(props.page)
-        }}
+        onPress={() => setOpen(!open)}
       >
         {open ? (
           <X

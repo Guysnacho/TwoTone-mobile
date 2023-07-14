@@ -5,8 +5,9 @@ import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
 import { ViewStyle } from "react-native"
-import { Button, Image, Text, View } from "react-native-ui-lib"
 import welcomeLogo from "../../assets/images/logo-filled.png"
+
+import { View, Text, Image, Button, YStack } from "tamagui"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -24,20 +25,20 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
       <View>
         <Image source={welcomeLogo} marginHorizontal="auto" />
       </View>
-      <Text color="forestgreen" textAlign="center" marginVertical={5}>
+      <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize={5}>
         Listen with us 🎵
       </Text>
-      <View flex center>
-        <Button alignSelf="center" size="$3">
+      <YStack justifyContent="space-around" alignContent="center" space>
+        <Button alignSelf="center" size="$5">
           Login
         </Button>
-        <Button alignSelf="center" size="$3">
+        <Button alignSelf="center" size="$5">
           Sign Up
         </Button>
-        <Button alignSelf="center" size="$3">
+        <Button alignSelf="center" size="$5">
           Try it Out
         </Button>
-      </View>
+      </YStack>
     </Screen>
   )
 })
