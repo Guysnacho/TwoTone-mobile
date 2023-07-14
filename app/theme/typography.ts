@@ -9,6 +9,17 @@ import {
   SpaceGrotesk_600SemiBold as spaceGroteskSemiBold,
   SpaceGrotesk_700Bold as spaceGroteskBold,
 } from "@expo-google-fonts/space-grotesk"
+import {
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from "@expo-google-fonts/inter"
 
 export const customFontsToLoad = {
   spaceGroteskLight,
@@ -16,6 +27,17 @@ export const customFontsToLoad = {
   spaceGroteskMedium,
   spaceGroteskSemiBold,
   spaceGroteskBold,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+  moiraiOne: require("../../assets/fonts/MoiraiOne.ttf"),
+  scopeOne: require("../../assets/fonts/ScopeOne.ttf"),
 }
 
 const fonts = {
@@ -49,6 +71,8 @@ const fonts = {
     // Android only font.
     normal: "monospace",
   },
+  moiraiOne: { normal: "moiraiOne" },
+  scopeOne: { normal: "scopeOne" },
 }
 
 export const typography = {

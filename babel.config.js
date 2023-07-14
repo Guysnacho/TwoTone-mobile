@@ -17,10 +17,9 @@ const plugins = [
       ],
     },
   ],
+  "@tamagui/babel-plugin",
   ['transform-inline-environment-variables', {
-    include: {
-      TAMAGUI_TARGET: 'native'
-    }
+    include: ["TAMAGUI_TARGET"]
   }],
   /** react-native-reanimated web support @see https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#web */
   "@babel/plugin-proposal-export-namespace-from",

@@ -1,36 +1,115 @@
-import * as React from "react"
-import { StyleProp, TextStyle, View, ViewStyle } from "react-native"
+import { Calendar, Home, Plus, User2, X } from "@tamagui/lucide-icons"
+import { navigate } from "app/navigators"
+import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
-import { colors, typography } from "app/theme"
-import { Text } from "app/components/Text"
+import * as React from "react"
+import { Button, YStack, styled } from "tamagui"
 
 export interface FabProps {
-  /**
-   * An optional style override useful for padding & margin.
-   */
-  style?: StyleProp<ViewStyle>
+  page: "Home" | "Profile"
 }
 
 /**
- * Describe your component here
+ * Floating action button for navigating the app. I don't want a navbar 😌
+ * @todo - Add animations for expansion and closing
  */
-export const Fab = observer(function Fab(props: FabProps) {
-  const { style } = props
-  const $styles = [$container, style]
+export const Fab = observer((props: FabProps) => {
+  const $containerInsets = useSafeAreaInsetsStyle(["bottom", "right"])
+  const [open, setOpen] = React.useState(false)
 
   return (
-    <View style={$styles}>
-      <Text style={$text}>Hello</Text>
-    </View>
+    <YStack
+      style={$containerInsets}
+      flexDirection="column"
+      flex={1}
+      justifyContent="center"
+      alignItems="flex-end"
+      marginHorizontal={3}
+      space
+    >
+      {/* <FabBubble // Search
+            style={$containerInsets}
+            display={open ? "flex" : "none"}
+            onPress={() => setOpen(!open)}
+          >
+            <Search style={{
+          top: "50%"
+        }} />
+          </FabBubble> */}
+      <FabBubble // Profile or Home Page
+        style={$containerInsets}
+        display={open ? "flex" : "none"}
+        onTouchEnd={() =>
+          navigate({
+            key: props.page === "Profile" ? "Home" : "Profile",
+            name: props.page === "Profile" ? "Home" : "Profile",
+          })
+        }
+      >
+        {props.page === "Home" ? (
+          <User2
+            style={{
+              top: "50%",
+            }}
+          />
+        ) : null}
+        {props.page === "Profile" ? (
+          <Home
+            style={{
+              top: "50%",
+            }}
+          />
+        ) : null}
+      </FabBubble>
+      <FabBubble // Song of the day
+        style={$containerInsets}
+        display={open ? "flex" : "none"}
+        onPress={() => setOpen(!open)}
+      >
+        <Calendar
+          style={{
+            top: "50%",
+          }}
+        />
+      </FabBubble>
+
+      <Button
+        marginStart={15}
+        marginEnd={15}
+        top={70}
+        style={$containerInsets}
+        aspectRatio={1}
+        size={3}
+        circular
+        noTextWrap
+        onPress={() => setOpen(!open)}
+      >
+        {open ? (
+          <X
+            style={{
+              top: "50%",
+            }}
+          />
+        ) : (
+          <Plus
+            style={{
+              top: "50%",
+            }}
+          />
+        )}
+      </Button>
+    </YStack>
   )
 })
 
-const $container: ViewStyle = {
-  justifyContent: "center",
-}
-
-const $text: TextStyle = {
-  fontFamily: typography.primary.normal,
-  fontSize: 14,
-  color: colors.palette.primary500,
-}
+const FabBubble = styled(Button, {
+  name: "FabBubble",
+  marginStart: 15,
+  marginEnd: 15,
+  paddingVertical: "auto",
+  top: 70,
+  aspectRatio: 1,
+  size: 0.5,
+  circular: true,
+  noTextWrap: true,
+})

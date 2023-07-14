@@ -24,7 +24,7 @@ import { setupReactotron } from "./services/reactotron"
 import Config from "./config"
 
 import { TamaguiProvider } from "tamagui"
-import TamaConfig from "./tamagui.config"
+import TamaConfig from "../tamagui.config"
 
 // Set up Reactotron, which is a free desktop app for inspecting and debugging
 // React Native apps. Learn more here: https://github.com/infinitered/reactotron
@@ -79,7 +79,7 @@ function App(props: AppProps) {
     isRestored: isNavigationStateRestored,
   } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY)
 
-  const [areFontsLoaded] = useFonts(customFontsToLoad) // Todo - Add Moirai and Scope One
+  const [areFontsLoaded] = useFonts(customFontsToLoad)
 
   const { rehydrated } = useInitialRootStore(() => {
     // This runs after the root store has been initialized and rehydrated.
