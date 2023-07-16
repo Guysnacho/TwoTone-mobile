@@ -25,7 +25,7 @@ Things to knock out for a minimal viable product. Something that's good enough t
 
 ### Current Tools
 
-- Skeleton UI
+- Tamagui - UI Toolkit
 
 ``` markdown
 ignite-project

@@ -24,12 +24,12 @@ export const HomeScreen: FC<HomeScreenProps> = observer(function HomeScreen() {
       <Screen style={$topContainerInsets} preset="scroll">
         <View display="flex" alignContent="center">
           <View>
-            <Text color="forestgreen" textAlign="center" marginVertical={5}>
+            <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize={15}>
               Listen with us 🎵
             </Text>
           </View>
           <View>
-            <Text color="forestgreen" textAlign="center" marginVertical={5}>
+            <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize={15}>
               Bottom Nav
             </Text>
           </View>
