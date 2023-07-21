@@ -28,7 +28,7 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
           <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize="$8">
             Listen with us 🎵
           </Text>
-          <Button alignSelf="center" size="$5" color={tokens.color.primary}>
+          <Button alignSelf="center" size="$5" theme="green">
             Login
           </Button>
           <Button alignSelf="center" size="$5">

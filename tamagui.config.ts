@@ -37,13 +37,15 @@ const bodyFont = createGenericFont(
 )
 
 const tokens = createTokens({
-  color: {...color, primary: "#017ACB",
-  primaryBg: "#D1E1CB",
-  accent: "#531253",
-  accentBg: "#F7DEFF",
-  background: "#E8D8C7",
-  juicyGreen: "#004643",
-    },
+  color: {
+    ...color,
+    primary: "#017ACB",
+    primaryBg: "#D1E1CB",
+    accent: "#531253",
+    accentBg: "#F7DEFF",
+    background: "#E8D8C7",
+    juicyGreen: "#004643",
+  },
   radius,
   zIndex,
   space,
@@ -55,12 +57,6 @@ const tokens = createTokens({
     md: 24,
     lg: 32,
   },
-    
-    
-    
-    
-    
-    
 })
 
 export default createTamagui({
