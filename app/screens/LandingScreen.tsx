@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
 import welcomeLogo from "../../assets/images/logo-filled.png"
 
-import { Button, Image, Text, XStack, YStack } from "tamagui"
+import { Button, Image, Text, XStack, YStack, getToken, getTokens, useTheme } from "tamagui"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -14,6 +14,7 @@ type LandingScreenProps = NativeStackScreenProps<AppStackScreenProps<"Landing">>
 
 export const LandingScreen: FC<LandingScreenProps> = observer(function LandingScreen() {
   const $topContainerInsets = useSafeAreaInsetsStyle(["top"])
+  const tokens = getTokens();
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
@@ -27,7 +28,7 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
           <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize="$8">
             Listen with us 🎵
           </Text>
-          <Button alignSelf="center" size="$5">
+          <Button alignSelf="center" size="$5" color={tokens.color.primary}>
             Login
           </Button>
           <Button alignSelf="center" size="$5">
