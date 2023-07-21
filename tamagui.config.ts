@@ -1,15 +1,9 @@
 import { shorthands } from "@tamagui/shorthands"
-import { createFiraMonoFont } from "@tamagui/font-fira-mono"
 
+import { createGenericFont } from "@tamagui/config"
 import { themes, tokens } from "@tamagui/themes"
-import { config, createGenericFont } from "@tamagui/config"
 
-import { createFont, createTamagui } from "tamagui"
-import { Inter_600SemiBold } from "@expo-google-fonts/inter"
-
-const TamaConfig = createTamagui(config)
-
-// export default TamaConfig;
+import { createTamagui } from "tamagui"
 
 const bodyFont = createGenericFont(
   "Inter_600SemiBold",
