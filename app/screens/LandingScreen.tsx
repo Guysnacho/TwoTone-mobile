@@ -35,7 +35,7 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
             alignSelf="center"
             size="$5"
             backgroundColor={tokens.color.primary}
-            onPressOut={() => navigation.navigate("Auth", AuthMethods.LOGIN)}
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.LOGIN.method)}
           >
             Login
           </Button>
@@ -44,7 +44,7 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
             alignSelf="center"
             size="$5"
             backgroundColor={tokens.color.primary}
-            onPressOut={() => navigation.navigate("Auth", AuthMethods.SIGNUP)}
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.SIGNUP.method)}
           >
             Sign Up
           </Button>
@@ -52,7 +52,7 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
             alignSelf="center"
             size="$5"
             theme="green"
-            onPressOut={() => navigation.navigate("Auth", AuthMethods.TRIAL)}
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.TRIAL.method)}
           >
             Try it Out
           </Button>
