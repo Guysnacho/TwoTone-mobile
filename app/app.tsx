@@ -9,19 +9,19 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
-import "./i18n"
-import "./utils/ignoreWarnings"
 import { useFonts } from "expo-font"
+import * as Linking from "expo-linking"
 import React, { Suspense } from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
-import * as Linking from "expo-linking"
+import Config from "./config"
+import "./i18n"
 import { useInitialRootStore } from "./models"
 import { AppNavigator, useNavigationPersistence } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
-import * as storage from "./utils/storage"
-import { customFontsToLoad } from "./theme"
 import { setupReactotron } from "./services/reactotron"
-import Config from "./config"
+import { customFontsToLoad } from "./theme"
+import "./utils/ignoreWarnings"
+import * as storage from "./utils/storage"
 
 import { TamaguiProvider } from "tamagui"
 import TamaConfig from "../tamagui.config"
@@ -50,17 +50,21 @@ const config = {
     Login: {
       path: "",
     },
-    Welcome: "welcome",
-    Demo: {
-      screens: {
-        DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
-        },
-        DemoDebug: "debug",
-        DemoPodcastList: "podcast",
-        DemoCommunity: "community",
-      },
-    },
+    Welcome: "Welcome",
+    Home: "Home",
+    Auth: "Auth",
+    Landing: "Landing",
+    Profile: "Profile",
+    // Demo: {
+    //   screens: {
+    //     DemoShowroom: {
+    //       path: "showroom/:queryIndex?/:itemIndex?",
+    //     },
+    //     DemoDebug: "debug",
+    //     DemoPodcastList: "podcast",
+    //     DemoCommunity: "community",
+    //   },
+    // },
   },
 }
 

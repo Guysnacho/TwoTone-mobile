@@ -9,6 +9,7 @@ module.exports = {
 			rules: {
 				"react-native/no-inline-styles": "off",
 				"react-native/no-color-literals": "off",
+				"typescript-eslint/no-var-requires": "off"
 			}
 		}
 	],

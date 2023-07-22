@@ -6,7 +6,9 @@ import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
 import welcomeLogo from "../../assets/images/logo-filled.png"
 
-import { Button, Image, Text, XStack, YStack, getToken, getTokens, useTheme } from "tamagui"
+import { useNavigation } from "@react-navigation/native"
+import { Button, Image, Text, XStack, YStack, getTokens } from "tamagui"
+import { AuthMethods } from "./AuthScreen"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -14,12 +16,13 @@ type LandingScreenProps = NativeStackScreenProps<AppStackScreenProps<"Landing">>
 
 export const LandingScreen: FC<LandingScreenProps> = observer(function LandingScreen() {
   const $topContainerInsets = useSafeAreaInsetsStyle(["top"])
-  const tokens = getTokens();
+  const tokens = getTokens()
   // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
+  // const rootstore = useStores()
 
   // Pull in navigation via hook
-  // const navigation = useNavigation()
+  const navigation = useNavigation()
+
   return (
     <Screen style={$topContainerInsets}>
       <XStack height="80%" marginVertical="auto" justifyContent="space-around" alignSelf="center">
@@ -28,13 +31,29 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
           <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize="$8">
             Listen with us 🎵
           </Text>
-          <Button alignSelf="center" size="$5" theme="green">
+          <Button
+            alignSelf="center"
+            size="$5"
+            backgroundColor={tokens.color.primary}
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.LOGIN)}
+          >
             Login
           </Button>
-          <Button alignSelf="center" size="$5">
+
+          <Button
+            alignSelf="center"
+            size="$5"
+            backgroundColor={tokens.color.primary}
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.SIGNUP)}
+          >
             Sign Up
           </Button>
-          <Button alignSelf="center" size="$5">
+          <Button
+            alignSelf="center"
+            size="$5"
+            theme="green"
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.TRIAL)}
+          >
             Try it Out
           </Button>
         </YStack>
