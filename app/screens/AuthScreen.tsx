@@ -1,9 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Screen } from "app/components"
 import { AppStackScreenProps } from "app/navigators"
+import { supabase } from "app/utils/supabaseClient"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useState } from "react"
 import { Button, Form, Image, Input, Separator, Spinner, Text, View, getTokens } from "tamagui"
 import clearLogo from "../../assets/images/logo.png"
 
@@ -16,33 +17,47 @@ export const AuthMethods = {
   LOGIN: { method: "LOGIN", message: "Lets give you some training wheels" },
 }
 
-export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ navigation, route }) {
+// Email validation regex
+export const emailVal = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$/
+const numberPattern = /^[0-9]+$/
+
+export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ route }) {
   const $containerInsets = useSafeAreaInsetsStyle(["top", "left", "right"])
   const tokens = getTokens()
   // Pull in one of our MST stores
   // const state = useStores()
-  const [status, setStatus] = useState<"off" | "submitting" | "submitted">("off")
+  const [status, setStatus] = useState<"off" | "submitting" | "submitted" | "success" | "errored">(
+    "off",
+  )
   const [email, setEmail] = useState("")
+  const [validEmail, setValidEmail] = useState(true)
   const [password, setPassword] = useState("")
+  const [validpassword, setValidPassword] = useState(true)
   const [phone, setPhone] = useState("")
+  const [validPhone, setValidPhone] = useState(true)
   const [username, setUsername] = useState("")
+  const [validUsername, setValidUsername] = useState(true)
 
-  useEffect(() => {
-    if (status === "submitting") {
-      const timer = setTimeout(() => setStatus("off"), 2000)
-      return () => {
-        setEmail("")
-        setPassword("")
-        setPhone("")
-        setUsername("")
-        clearTimeout(timer)
-      }
+  const handleSignUp = () => {
+    setStatus("submitting")
+    if (emailVal.test(email)) setValidEmail(false)
+    if (password.length < 8) setValidPassword(false)
+    if (!phone && numberPattern.test(phone)) setValidPhone(false)
+    if (username.length < 6) setValidUsername(false)
+
+    if (validEmail && validpassword && validPhone && validUsername && validUsername === true) {
+      supabase.auth.signUp({ email: email, password: password, phone: phone }).then(() => {
+        setStatus("success")
+        // run updates
+        // Progress to next page
+      })
     }
-  }, [status])
+    setPassword("")
+  }
 
   return (
-    <Screen style={$containerInsets} preset="auto">
-      <View marginTop="$5" paddingHorizontal="$5" space>
+    <Screen style={$containerInsets} preset="scroll">
+      <View marginTop="$5" paddingHorizontal="$5" justifyContent="space-between" space="$5">
         <Image source={clearLogo} alt="Transparent logo" />
         <Text fontSize="$7" color="$accent">
           {AuthMethods[route.params as string].message}
@@ -51,50 +66,64 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ na
         <Form
           alignItems="center"
           justifyContent="space-around"
-          marginVertical="auto"
-          space
-          onSubmit={() => setStatus("submitting")}
+          marginTop="auto"
+          space="$5"
           borderWidth={1}
           borderRadius="$4"
           borderColor={tokens.color.accent}
           padding="$8"
           elevationAndroid={5}
           backgroundColor={tokens.color.background}
+          onSubmit={handleSignUp}
         >
           <Input
-            onChangeText={(e) => setEmail(e)}
-            borderRadius={0}
-            width="70%"
+            borderRadius={5}
+            width="90%"
+            color="$accent"
+            placeholder={validEmail ? "Email" : "Enter a valid email"}
+            backgroundColor="$accentBg"
             value={email}
-            placeholder="Email"
-            backgroundColor="$accentBg"
+            aria-label="email"
+            importantForAutofill="auto"
+            onChangeText={(e) => setEmail(e)}
           />
           <Input
-            onChangeText={(e) => setPassword(e)}
-            borderRadius={0}
-            width="70%"
+            borderRadius={5}
+            width="90%"
+            color="$accent"
+            placeholder={validpassword ? "Password" : "Enter a valid password"}
+            backgroundColor="$accentBg"
             value={password}
-            placeholder="Password"
-            backgroundColor="$accentBg"
+            aria-label="password"
+            importantForAutofill="auto"
+            onChangeText={(e) => setPassword(e)}
           />
           <Input
-            onChangeText={(e) => setPhone(e)}
-            borderRadius={0}
-            width="70%"
+            borderRadius={5}
+            width="90%"
+            color="$accent"
+            placeholder={validPhone ? "Phone" : "Enter a valid phone"}
+            backgroundColor="$accentBg"
             value={phone}
-            placeholder="Phone"
-            backgroundColor="$accentBg"
+            aria-label="phone"
+            importantForAutofill="auto"
+            onChangeText={(e) => setPhone(e)}
           />
           <Input
-            onChangeText={(e) => setUsername(e)}
-            borderRadius={0}
-            width="70%"
-            value={username}
-            placeholder="Username"
+            borderRadius={5}
+            width="90%"
+            color="$accent"
+            placeholder={validUsername ? "Username" : "Enter a valid username"}
             backgroundColor="$accentBg"
+            value={username}
+            aria-label="username"
+            importantForAutofill="auto"
+            onChangeText={(e) => setUsername(e)}
           />
-          <Form.Trigger asChild disabled={status !== "off"}>
-            <Button icon={status === "submitting" ? () => <Spinner /> : undefined}>Submit</Button>
+          <Form.Trigger asChild disabled={status === "submitting" || status === "success"}>
+            <Button size="$5" icon={status === "submitting" ? () => <Spinner /> : undefined}>
+              Submit
+            </Button>
           </Form.Trigger>
         </Form>
       </View>
