@@ -33,7 +33,7 @@ export type AppStackParamList = {
   Landing: undefined
   Home: undefined
   Profile: undefined
-  Auth: {method: AuthMethods.TRIAL}
+  Auth: {method: string}
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

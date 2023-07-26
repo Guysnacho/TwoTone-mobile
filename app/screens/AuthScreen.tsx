@@ -20,6 +20,7 @@ export const AuthMethods = {
 // Email validation regex
 export const emailVal = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$/
 const numberPattern = /^[0-9]+$/
+const usernamePattern = /^[a-zA-Z0-9!@#$%^&*()-_=+[\]{}|;:'",.<>/?`~]+$/ // /^[a-zA-Z0-9_]+$/
 
 export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ route }) {
   const $containerInsets = useSafeAreaInsetsStyle(["top", "left", "right"])
@@ -38,19 +39,46 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
   const [username, setUsername] = useState("")
   const [validUsername, setValidUsername] = useState(true)
 
-  const handleSignUp = () => {
+  const handleAuth = () => {
     setStatus("submitting")
     if (emailVal.test(email)) setValidEmail(false)
     if (password.length < 8) setValidPassword(false)
     if (!phone && numberPattern.test(phone)) setValidPhone(false)
-    if (username.length < 6) setValidUsername(false)
+    if (!usernamePattern.test(username) || username.length < 5) setValidUsername(false)
 
-    if (validEmail && validpassword && validPhone && validUsername && validUsername === true) {
+    if (
+      (route.params as string) == AuthMethods.SIGNUP.method &&
+      validEmail &&
+      validpassword &&
+      validPhone &&
+      validUsername
+    ) {
       supabase.auth.signUp({ email: email, password: password, phone: phone }).then(() => {
         setStatus("success")
         // run updates
         // Progress to next page
       })
+    } else if (
+      (route.params as string) == AuthMethods.LOGIN.method &&
+      validEmail &&
+      validpassword
+    ) {
+      supabase.auth.signInWithPassword({ email: email, password: password }).then(() => {
+        setStatus("success")
+        // run updates
+        // Progress to next page
+      })
+    } else if (
+      (route.params as string) == AuthMethods.TRIAL.method &&
+      validUsername &&
+      validUsername === true
+    ) {
+      setStatus("success")
+      // run updates
+      // Progress to next page
+    } else {
+      setStatus("errored")
+      console.log("Error in auth flow")
     }
     setPassword("")
   }
@@ -74,7 +102,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           padding="$8"
           elevationAndroid={5}
           backgroundColor={tokens.color.background}
-          onSubmit={handleSignUp}
+          onSubmit={handleAuth}
         >
           <Input
             borderRadius={5}
@@ -85,18 +113,10 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             value={email}
             aria-label="email"
             importantForAutofill="auto"
+            display={
+              [AuthMethods.SIGNUP.method].includes(route.params as string) ? "none" : undefined
+            }
             onChangeText={(e) => setEmail(e)}
-          />
-          <Input
-            borderRadius={5}
-            width="90%"
-            color="$accent"
-            placeholder={validpassword ? "Password" : "Enter a valid password"}
-            backgroundColor="$accentBg"
-            value={password}
-            aria-label="password"
-            importantForAutofill="auto"
-            onChangeText={(e) => setPassword(e)}
           />
           <Input
             borderRadius={5}
@@ -107,6 +127,9 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             value={phone}
             aria-label="phone"
             importantForAutofill="auto"
+            display={
+              [AuthMethods.SIGNUP.method].includes(route.params as string) ? "none" : undefined
+            }
             onChangeText={(e) => setPhone(e)}
           />
           <Input
@@ -119,6 +142,22 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             aria-label="username"
             importantForAutofill="auto"
             onChangeText={(e) => setUsername(e)}
+          />
+          <Input
+            borderRadius={5}
+            width="90%"
+            color="$accent"
+            placeholder={validpassword ? "Password" : "Enter a valid password"}
+            backgroundColor="$accentBg"
+            value={password}
+            aria-label="password"
+            importantForAutofill="auto"
+            display={
+              [AuthMethods.LOGIN.method, AuthMethods.SIGNUP.method].includes(route.params as string)
+                ? "none"
+                : undefined
+            }
+            onChangeText={(e) => setPassword(e)}
           />
           <Form.Trigger asChild disabled={status === "submitting" || status === "success"}>
             <Button size="$5" icon={status === "submitting" ? () => <Spinner /> : undefined}>
