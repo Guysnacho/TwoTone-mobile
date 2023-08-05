@@ -7,6 +7,8 @@ import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
 import { Button, Form, Image, Input, Separator, Spinner, Text, View, getTokens } from "tamagui"
 import clearLogo from "../../assets/images/logo.png"
+import { api } from "app/services/api"
+import { User } from "@supabase/supabase-js"
 
 type AuthScreenProps = NativeStackScreenProps<AppStackScreenProps<"Auth">>
 
@@ -53,11 +55,20 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
       validPhone &&
       validUsername
     ) {
-      supabase.auth.signUp({ email: email, password: password, phone: phone }).then(() => {
-        setStatus("success")
-        // run updates
-        // Progress to next page
+      api.apisauce.post<User>("/api/auth", {
+        email: email,
+        password: password,
+        phone: phone,
+        options: {
+          data: { username: username },
+        },
       })
+        .then((res) => {
+          // res.data.
+          setStatus("success")
+          // run updates
+          // Progress to next page
+        })
     } else if (
       (route.params as string) == AuthMethods.LOGIN.method &&
       validEmail &&
