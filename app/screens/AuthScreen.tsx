@@ -1,22 +1,24 @@
+import { useNavigation } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Screen } from "app/components"
-import { AppStackScreenProps } from "app/navigators"
+import { AppStackScreenProps, navigate } from "app/navigators"
+import { api } from "app/services/api"
+import { fetchSecret } from "app/services/api/common"
+import { APIError, SignUpResponse } from "app/types/Auth"
 import { supabase } from "app/utils/supabaseClient"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
 import { Button, Form, Image, Input, Separator, Spinner, Text, View, getTokens } from "tamagui"
 import clearLogo from "../../assets/images/logo.png"
-import { api } from "app/services/api"
-import { User } from "@supabase/supabase-js"
 
 type AuthScreenProps = NativeStackScreenProps<AppStackScreenProps<"Auth">>
 
 // Different messages for different flows
 export const AuthMethods = {
   SIGNUP: { method: "SIGNUP", message: "Mkay, gonna need a few things :)" },
-  TRIAL: { method: "TRIAL", message: "Welcome back :)" },
-  LOGIN: { method: "LOGIN", message: "Lets give you some training wheels" },
+  LOGIN: { method: "LOGIN", message: "Welcome back :)" },
+  TRIAL: { method: "TRIAL", message: "Lets give you some training wheels" },
 }
 
 // Email validation regex
@@ -40,35 +42,43 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
   const [validPhone, setValidPhone] = useState(true)
   const [username, setUsername] = useState("")
   const [validUsername, setValidUsername] = useState(true)
+  // Pull in navigation via hook
+  const navigation = useNavigation()
 
-  const handleAuth = () => {
+  const handleAuth = async () => {
     setStatus("submitting")
     if (emailVal.test(email)) setValidEmail(false)
     if (password.length < 8) setValidPassword(false)
     if (!phone && numberPattern.test(phone)) setValidPhone(false)
     if (!usernamePattern.test(username) || username.length < 5) setValidUsername(false)
 
-    if (
-      (route.params as string) == AuthMethods.SIGNUP.method &&
-      validEmail &&
-      validpassword &&
-      validPhone &&
-      validUsername
-    ) {
-      api.apisauce.post<User>("/api/auth", {
-        email: email,
-        password: password,
-        phone: phone,
-        options: {
-          data: { username: username },
-        },
-      })
-        .then((res) => {
-          // res.data.
-          setStatus("success")
-          // run updates
-          // Progress to next page
-        })
+    if ((route.params as string) == AuthMethods.SIGNUP.method) {
+      if (!(validEmail && validpassword && validPhone && validUsername)) {
+        setStatus("errored")
+      } else {
+        await api.apisauce
+          .post<SignUpResponse, APIError>("/api/auth", {
+            secret: await fetchSecret(),
+            email: email,
+            password: password,
+            phone: phone,
+            username: username,
+          })
+          .then((res) => {
+            console.log(res)
+            setStatus("success")
+            // Progress to next page
+            navigate({ key: "Landing", name: "Landing" })
+          })
+          .catch((err) => {
+            console.log(err)
+            setStatus("errored")
+            setEmail("")
+            setPassword("")
+            setPhone("")
+            setUsername("")
+          })
+      }
     } else if (
       (route.params as string) == AuthMethods.LOGIN.method &&
       validEmail &&
@@ -76,8 +86,9 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
     ) {
       supabase.auth.signInWithPassword({ email: email, password: password }).then(() => {
         setStatus("success")
-        // run updates
-        // Progress to next page
+        //set store
+        //route to home screen
+        navigate({ key: "Home", name: "Home" })
       })
     } else if (
       (route.params as string) == AuthMethods.TRIAL.method &&
@@ -85,8 +96,8 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
       validUsername === true
     ) {
       setStatus("success")
-      // run updates
-      // Progress to next page
+      //set store
+      navigate({ key: "Home", name: "Home" })
     } else {
       setStatus("errored")
       console.log("Error in auth flow")
@@ -125,7 +136,9 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             aria-label="email"
             importantForAutofill="auto"
             display={
-              [AuthMethods.SIGNUP.method].includes(route.params as string) ? "none" : undefined
+              [AuthMethods.SIGNUP.method, AuthMethods.LOGIN.method].includes(route.params as string)
+                ? undefined
+                : "none"
             }
             onChangeText={(e) => setEmail(e)}
           />
@@ -139,7 +152,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             aria-label="phone"
             importantForAutofill="auto"
             display={
-              [AuthMethods.SIGNUP.method].includes(route.params as string) ? "none" : undefined
+              [AuthMethods.SIGNUP.method].includes(route.params as string) ? undefined : "none"
             }
             onChangeText={(e) => setPhone(e)}
           />
@@ -152,6 +165,11 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             value={username}
             aria-label="username"
             importantForAutofill="auto"
+            display={
+              [AuthMethods.SIGNUP.method, AuthMethods.TRIAL.method].includes(route.params as string)
+                ? undefined
+                : "none"
+            }
             onChangeText={(e) => setUsername(e)}
           />
           <Input
@@ -165,15 +183,19 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             importantForAutofill="auto"
             display={
               [AuthMethods.LOGIN.method, AuthMethods.SIGNUP.method].includes(route.params as string)
-                ? "none"
-                : undefined
+                ? undefined
+                : "none"
             }
             onChangeText={(e) => setPassword(e)}
           />
-          <Form.Trigger asChild disabled={status === "submitting" || status === "success"}>
-            <Button size="$5" icon={status === "submitting" ? () => <Spinner /> : undefined}>
-              Submit
-            </Button>
+          <Form.Trigger asChild disabled={status === "submitting"}>
+            {status === "success" ? (
+              <Button size="$5">Login</Button>
+            ) : (
+              <Button size="$5" icon={status === "submitting" ? () => <Spinner /> : undefined}>
+                Submit
+              </Button>
+            )}
           </Form.Trigger>
         </Form>
       </View>
