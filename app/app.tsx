@@ -47,9 +47,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 const prefix = Linking.createURL("/")
 const config = {
   screens: {
-    Login: {
-      path: "",
-    },
+    Login: "Login",
     Welcome: "Welcome",
     Home: "Home",
     Auth: "Auth",
