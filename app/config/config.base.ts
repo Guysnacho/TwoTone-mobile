@@ -22,7 +22,7 @@ const BaseConfig: ConfigBaseProps = {
    * is pressed while in that screen. Only affects Android.
    */
   exitRoutes: ["Welcome"],
-  API_URL: "https://twotone.netlify.app",
+  API_URL: "https://twotone.app",
 }
 
 export default BaseConfig
