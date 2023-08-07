@@ -1,16 +1,16 @@
-import { useNavigation } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { useToastController } from "@tamagui/toast"
 import { Screen } from "app/components"
 import { AppStackScreenProps, navigate } from "app/navigators"
 import { api } from "app/services/api"
-import { fetchSecret } from "app/services/api/common"
-import { APIError, SignUpResponse } from "app/types/Auth"
+import { APIError, SignUpResponse } from "app/types/auth"
+import { createToast, fetchSecret } from "app/utils/common"
 import { supabase } from "app/utils/supabaseClient"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
 import { Button, Form, Image, Input, Separator, Spinner, Text, View, getTokens } from "tamagui"
-import clearLogo from "../../assets/images/logo.png"
+const clearLogo = require("../../assets/images/logo.png")
 
 type AuthScreenProps = NativeStackScreenProps<AppStackScreenProps<"Auth">>
 
@@ -22,18 +22,17 @@ export const AuthMethods = {
 }
 
 // Email validation regex
-export const emailVal = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$/
+export const emailVal = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const numberPattern = /^[0-9]+$/
 const usernamePattern = /^[a-zA-Z0-9!@#$%^&*()-_=+[\]{}|;:'",.<>/?`~]+$/ // /^[a-zA-Z0-9_]+$/
 
 export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ route }) {
   const $containerInsets = useSafeAreaInsetsStyle(["top", "left", "right"])
   const tokens = getTokens()
+  const toast = useToastController()
   // Pull in one of our MST stores
   // const state = useStores()
-  const [status, setStatus] = useState<"off" | "submitting" | "submitted" | "success" | "errored">(
-    "off",
-  )
+  const [status, setStatus] = useState<"off" | "submitting">("off")
   const [email, setEmail] = useState("")
   const [validEmail, setValidEmail] = useState(true)
   const [password, setPassword] = useState("")
@@ -43,10 +42,14 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
   const [username, setUsername] = useState("")
   const [validUsername, setValidUsername] = useState(true)
   // Pull in navigation via hook
-  const navigation = useNavigation()
+  // const navigation = useNavigation()
 
   const handleAuth = async () => {
     setStatus("submitting")
+    setValidEmail(true)
+    setValidPassword(true)
+    setValidPhone(true)
+    setValidUsername(true)
     if (emailVal.test(email)) setValidEmail(false)
     if (password.length < 8) setValidPassword(false)
     if (!phone && numberPattern.test(phone)) setValidPhone(false)
@@ -54,7 +57,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
 
     if ((route.params as string) == AuthMethods.SIGNUP.method) {
       if (!(validEmail && validpassword && validPhone && validUsername)) {
-        setStatus("errored")
+        setStatus("off")
       } else {
         await api.apisauce
           .post<SignUpResponse, APIError>("/api/auth", {
@@ -64,45 +67,69 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             phone: phone,
             username: username,
           })
-          .then((res) => {
-            console.log(res)
-            setStatus("success")
+          .then(() => {
             // Progress to next page
-            navigate({ key: "Landing", name: "Landing" })
+            supabase.auth
+              .resend({ email: email, type: "signup" })
+              .then(() => createToast(toast, "Welcome to TwoTone, confirm your email though."))
+              .catch(() =>
+                createToast(toast, "Issue sending your confirmation email, please contact support"),
+              )
+              .finally(() => navigate({ key: "Landing", name: "Landing" }))
           })
           .catch((err) => {
+            createToast(toast, err.message)
             console.log(err)
-            setStatus("errored")
+            setStatus("off")
             setEmail("")
             setPassword("")
             setPhone("")
             setUsername("")
           })
       }
-    } else if (
-      (route.params as string) == AuthMethods.LOGIN.method &&
-      validEmail &&
-      validpassword
-    ) {
-      supabase.auth.signInWithPassword({ email: email, password: password }).then(() => {
-        setStatus("success")
-        //set store
-        //route to home screen
-        navigate({ key: "Home", name: "Home" })
-      })
+    } else if ((route.params as string) == AuthMethods.LOGIN.method) {
+      if (!(validEmail && validpassword)) {
+        console.log(
+          `Valid email - ${validEmail} email - ${email} Valid password - ${validpassword}`,
+        )
+
+        createToast(toast, "Invalid login")
+      } else {
+        await supabase.auth
+          .signInWithPassword({ email: email, password: password })
+          .then((res) => {
+            if (res.data.user && res.data.user.confirmed_at == null) {
+              createToast(toast, "Please confirm your email :)")
+              supabase.auth.signOut().finally()
+            } else if (res.error) {
+              createToast(toast, res.error.message)
+              supabase.auth.signOut().finally()
+            } else {
+              createToast(toast, "Welcome")
+              navigate({ key: "Home", name: "Home" })
+            }
+            //set store
+            //route to home screen
+          })
+          .catch(() => {
+            createToast(toast, "Error connecting to server, maybe try again later")
+            supabase.auth.signOut()
+            setStatus("off")
+          })
+      }
     } else if (
       (route.params as string) == AuthMethods.TRIAL.method &&
       validUsername &&
       validUsername === true
     ) {
-      setStatus("success")
       //set store
       navigate({ key: "Home", name: "Home" })
     } else {
-      setStatus("errored")
-      console.log("Error in auth flow")
+      createToast(toast, "Error in auth flow, maybe try again later")
     }
+    setEmail("")
     setPassword("")
+    setStatus("off")
   }
 
   return (
@@ -140,7 +167,10 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
                 ? undefined
                 : "none"
             }
-            onChangeText={(e) => setEmail(e)}
+            onChangeText={(e) => {
+              setEmail(e)
+              setValidEmail(true)
+            }}
           />
           <Input
             borderRadius={5}
@@ -154,7 +184,10 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             display={
               [AuthMethods.SIGNUP.method].includes(route.params as string) ? undefined : "none"
             }
-            onChangeText={(e) => setPhone(e)}
+            onChangeText={(e) => {
+              setPhone(e)
+              setValidEmail(true)
+            }}
           />
           <Input
             borderRadius={5}
@@ -170,7 +203,10 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
                 ? undefined
                 : "none"
             }
-            onChangeText={(e) => setUsername(e)}
+            onChangeText={(e) => {
+              setUsername(e)
+              setValidUsername(true)
+            }}
           />
           <Input
             borderRadius={5}
@@ -186,16 +222,15 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
                 ? undefined
                 : "none"
             }
-            onChangeText={(e) => setPassword(e)}
+            onChangeText={(e) => {
+              setPassword(e)
+              setValidPassword(true)
+            }}
           />
           <Form.Trigger asChild disabled={status === "submitting"}>
-            {status === "success" ? (
-              <Button size="$5">Login</Button>
-            ) : (
-              <Button size="$5" icon={status === "submitting" ? () => <Spinner /> : undefined}>
-                Submit
-              </Button>
-            )}
+            <Button size="$5" icon={status === "submitting" ? () => <Spinner /> : undefined}>
+              Submit
+            </Button>
           </Form.Trigger>
         </Form>
       </View>
