@@ -23,6 +23,7 @@ import { customFontsToLoad } from "./theme"
 import "./utils/ignoreWarnings"
 import * as storage from "./utils/storage"
 
+import { ToastProvider } from "@tamagui/toast"
 import { TamaguiProvider } from "tamagui"
 import TamaConfig from "../tamagui.config"
 
@@ -109,17 +110,19 @@ function App(props: AppProps) {
   // otherwise, we're ready to render the app
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <TamaguiProvider config={TamaConfig}>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
+      <ErrorBoundary catchErrors={Config.catchErrors}>
+        <TamaguiProvider config={TamaConfig}>
           <Suspense>
-            <AppNavigator
-              linking={linking}
-              initialState={initialNavigationState}
-              onStateChange={onNavigationStateChange}
-            />
+            <ToastProvider>
+              <AppNavigator
+                linking={linking}
+                initialState={initialNavigationState}
+                onStateChange={onNavigationStateChange}
+              />
+            </ToastProvider>
           </Suspense>
-        </ErrorBoundary>
-      </TamaguiProvider>
+        </TamaguiProvider>
+      </ErrorBoundary>
     </SafeAreaProvider>
   )
 }
