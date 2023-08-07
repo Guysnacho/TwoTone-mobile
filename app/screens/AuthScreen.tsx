@@ -79,7 +79,6 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           })
           .catch((err) => {
             createToast(toast, err.message)
-            console.log(err)
             setStatus("off")
             setEmail("")
             setPassword("")
@@ -89,10 +88,6 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
       }
     } else if ((route.params as string) == AuthMethods.LOGIN.method) {
       if (!(validEmail && validpassword)) {
-        console.log(
-          `Valid email - ${validEmail} email - ${email} Valid password - ${validpassword}`,
-        )
-
         createToast(toast, "Invalid login")
       } else {
         await supabase.auth
@@ -117,13 +112,13 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             setStatus("off")
           })
       }
-    } else if (
-      (route.params as string) == AuthMethods.TRIAL.method &&
-      validUsername &&
-      validUsername === true
-    ) {
-      //set store
-      navigate({ key: "Home", name: "Home" })
+    } else if ((route.params as string) == AuthMethods.TRIAL.method) {
+      if (!validUsername) {
+        createToast(toast, "Invalid username")
+      } else {
+        //set store
+        navigate({ key: "Home", name: "Home" })
+      }
     } else {
       createToast(toast, "Error in auth flow, maybe try again later")
     }
