@@ -9,20 +9,21 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
-import "./i18n"
-import "./utils/ignoreWarnings"
 import { useFonts } from "expo-font"
+import * as Linking from "expo-linking"
 import React, { Suspense } from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
-import * as Linking from "expo-linking"
+import Config from "./config"
+import "./i18n"
 import { useInitialRootStore } from "./models"
 import { AppNavigator, useNavigationPersistence } from "./navigators"
 import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
-import * as storage from "./utils/storage"
-import { customFontsToLoad } from "./theme"
 import { setupReactotron } from "./services/reactotron"
-import Config from "./config"
+import { customFontsToLoad } from "./theme"
+import "./utils/ignoreWarnings"
+import * as storage from "./utils/storage"
 
+import { ToastProvider } from "@tamagui/toast"
 import { TamaguiProvider } from "tamagui"
 import TamaConfig from "../tamagui.config"
 
@@ -47,20 +48,22 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 const prefix = Linking.createURL("/")
 const config = {
   screens: {
-    Login: {
-      path: "",
-    },
-    Welcome: "welcome",
-    Demo: {
-      screens: {
-        DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
-        },
-        DemoDebug: "debug",
-        DemoPodcastList: "podcast",
-        DemoCommunity: "community",
-      },
-    },
+    Login: "Login",
+    Welcome: "Welcome",
+    Home: "Home",
+    Auth: "Auth",
+    Landing: "Landing",
+    Profile: "Profile",
+    // Demo: {
+    //   screens: {
+    //     DemoShowroom: {
+    //       path: "showroom/:queryIndex?/:itemIndex?",
+    //     },
+    //     DemoDebug: "debug",
+    //     DemoPodcastList: "podcast",
+    //     DemoCommunity: "community",
+    //   },
+    // },
   },
 }
 
@@ -107,17 +110,19 @@ function App(props: AppProps) {
   // otherwise, we're ready to render the app
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <TamaguiProvider config={TamaConfig}>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
+      <ErrorBoundary catchErrors={Config.catchErrors}>
+        <TamaguiProvider config={TamaConfig}>
           <Suspense>
-            <AppNavigator
-              linking={linking}
-              initialState={initialNavigationState}
-              onStateChange={onNavigationStateChange}
-            />
+            <ToastProvider>
+              <AppNavigator
+                linking={linking}
+                initialState={initialNavigationState}
+                onStateChange={onNavigationStateChange}
+              />
+            </ToastProvider>
           </Suspense>
-        </ErrorBoundary>
-      </TamaguiProvider>
+        </TamaguiProvider>
+      </ErrorBoundary>
     </SafeAreaProvider>
   )
 }

@@ -4,10 +4,11 @@ import { AppStackScreenProps } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
-import { ViewStyle } from "react-native"
-import welcomeLogo from "../../assets/images/logo-filled.png"
+const welcomeLogo = require("../../assets/images/logo-filled.png")
 
-import { View, Text, Image, Button, YStack } from "tamagui"
+import { useNavigation } from "@react-navigation/native"
+import { Button, Image, Text, XStack, YStack, getTokens } from "tamagui"
+import { AuthMethods } from "./AuthScreen"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -15,34 +16,48 @@ type LandingScreenProps = NativeStackScreenProps<AppStackScreenProps<"Landing">>
 
 export const LandingScreen: FC<LandingScreenProps> = observer(function LandingScreen() {
   const $topContainerInsets = useSafeAreaInsetsStyle(["top"])
+  const tokens = getTokens()
   // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
+  // const rootstore = useStores()
 
   // Pull in navigation via hook
-  // const navigation = useNavigation()
+  const navigation = useNavigation()
+
   return (
-    <Screen style={$topContainerInsets} preset="scroll">
-      <View>
-        <Image source={welcomeLogo} marginHorizontal="auto" />
-      </View>
-      <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize={5}>
-        Listen with us 🎵
-      </Text>
-      <YStack justifyContent="space-around" alignContent="center" space>
-        <Button alignSelf="center" size="$5">
-          Login
-        </Button>
-        <Button alignSelf="center" size="$5">
-          Sign Up
-        </Button>
-        <Button alignSelf="center" size="$5">
-          Try it Out
-        </Button>
-      </YStack>
+    <Screen style={$topContainerInsets}>
+      <XStack height="80%" marginVertical="auto" justifyContent="space-around" alignSelf="center">
+        <YStack display="flex" justifyContent="space-around" alignContent="center" space>
+          <Image source={welcomeLogo} marginHorizontal="auto" />
+          <Text color="forestgreen" textAlign="center" marginVertical={5} fontSize="$8">
+            Listen with us 🎵
+          </Text>
+          <Button
+            alignSelf="center"
+            size="$5"
+            backgroundColor={tokens.color.primary}
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.LOGIN.method)}
+          >
+            Login
+          </Button>
+
+          <Button
+            alignSelf="center"
+            size="$5"
+            backgroundColor={tokens.color.primary}
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.SIGNUP.method)}
+          >
+            Sign Up
+          </Button>
+          <Button
+            alignSelf="center"
+            size="$5"
+            theme="green"
+            onPressOut={() => navigation.navigate("Auth", AuthMethods.TRIAL.method)}
+          >
+            Try it Out
+          </Button>
+        </YStack>
+      </XStack>
     </Screen>
   )
 })
-
-const $root: ViewStyle = {
-  flex: 1,
-}

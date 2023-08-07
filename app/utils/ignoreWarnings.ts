@@ -7,4 +7,5 @@ import { LogBox } from "react-native"
 // prettier-ignore
 LogBox.ignoreLogs([
   "Require cycle:",
+  "@supabase/gotrue-js: Stack guards not supported",
 ])
