@@ -4,7 +4,7 @@ import { AppStackScreenProps } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
-import welcomeLogo from "../../assets/images/logo-filled.png"
+const welcomeLogo = require("../../assets/images/logo-filled.png")
 
 import { useNavigation } from "@react-navigation/native"
 import { Button, Image, Text, XStack, YStack, getTokens } from "tamagui"
