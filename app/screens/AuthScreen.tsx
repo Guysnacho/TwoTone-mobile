@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { useToastController } from "@tamagui/toast"
 import { Screen } from "app/components"
+import { useStores } from "app/models"
 import { AppStackScreenProps, navigate } from "app/navigators"
 import { api } from "app/services/api"
 import { APIError, SignUpResponse } from "app/types/auth"
@@ -31,7 +32,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
   const tokens = getTokens()
   const toast = useToastController()
   // Pull in one of our MST stores
-  // const state = useStores()
+  const store = useStores()
   const [status, setStatus] = useState<"off" | "submitting">("off")
   const [email, setEmail] = useState("")
   const [validEmail, setValidEmail] = useState(true)
@@ -98,9 +99,9 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
               supabase.auth.signOut().finally()
             } else if (res.error) {
               createToast(toast, res.error.message)
-              supabase.auth.signOut().finally()
             } else {
               createToast(toast, "Welcome")
+              store.user.login(res.data.user)
               navigate({ key: "Home", name: "Home" })
             }
             //set store
@@ -108,7 +109,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           })
           .catch(() => {
             createToast(toast, "Error connecting to server, maybe try again later")
-            supabase.auth.signOut()
+            supabase.auth.signOut().finally()
             setStatus("off")
           })
       }
@@ -117,6 +118,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
         createToast(toast, "Invalid username")
       } else {
         //set store
+        store.user.trialLogin(username)
         navigate({ key: "Home", name: "Home" })
       }
     } else {
