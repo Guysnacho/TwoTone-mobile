@@ -40,12 +40,12 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.0.2",
     "@supabase/supabase-js": "^2.26.0",
-    "@tamagui/babel-plugin": "^1.39.8",
-    "@tamagui/config": "^1.39.8",
-    "@tamagui/font-fira-mono": "^1.39.8",
-    "@tamagui/lucide-icons": "^1.39.8",
-    "@tamagui/shorthands": "^1.39.8",
-    "@tamagui/themes": "^1.39.8",
+    "@tamagui/babel-plugin": "^1.50.2",
+    "@tamagui/config": "^1.50.2",
+    "@tamagui/font-fira-mono": "^1.50.2",
+    "@tamagui/lucide-icons": "^1.50.2",
+    "@tamagui/shorthands": "^1.50.2",
+    "@tamagui/themes": "^1.50.2",
     "@tamagui/toast": "^1.50.2",
     "apisauce": "2.1.5",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
@@ -79,7 +79,7 @@
     "reactotron-mst": "3.1.4",
     "reactotron-react-js": "^3.3.7",
     "reactotron-react-native": "5.0.3",
-    "tamagui": "^1.39.8"
+    "tamagui": "^1.50.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

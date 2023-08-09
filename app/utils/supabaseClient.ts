@@ -5,7 +5,7 @@ import { Database } from "app/config/schema"
 
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL
- 
+
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => {
     return SecureStore.getItemAsync(key)

@@ -1,4 +1,5 @@
 import { User as SupaUser } from "@supabase/supabase-js"
+import { supabase } from "app/utils/supabaseClient"
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 
@@ -32,6 +33,8 @@ export const UserModel = types
       self.createdAt = supaUser.created_at
     },
     logout() {
+      // Actually log out if this isn't a trial
+      if (self.authenticated) supabase.auth.signOut().finally()
       self.authenticated = false
       self.id = undefined
       self.username = undefined

@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { useToastController } from "@tamagui/toast"
 import { Screen } from "app/components"
+import { useStores } from "app/models"
 import { AppStackScreenProps, navigate } from "app/navigators"
 import { api } from "app/services/api"
 import { APIError, SignUpResponse } from "app/types/auth"
@@ -9,7 +10,7 @@ import { supabase } from "app/utils/supabaseClient"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
-import { Button, Form, Image, Input, Separator, Spinner, Text, View, getTokens } from "tamagui"
+import { Button, Form, Image, Input, Separator, Spinner, Text, YStack, getTokens } from "tamagui"
 const clearLogo = require("../../assets/images/logo.png")
 
 type AuthScreenProps = NativeStackScreenProps<AppStackScreenProps<"Auth">>
@@ -31,7 +32,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
   const tokens = getTokens()
   const toast = useToastController()
   // Pull in one of our MST stores
-  // const state = useStores()
+  const store = useStores()
   const [status, setStatus] = useState<"off" | "submitting">("off")
   const [email, setEmail] = useState("")
   const [validEmail, setValidEmail] = useState(true)
@@ -53,7 +54,8 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
     if (emailVal.test(email)) setValidEmail(false)
     if (password.length < 8) setValidPassword(false)
     if (!phone && numberPattern.test(phone)) setValidPhone(false)
-    if (!usernamePattern.test(username) || username.length < 5) setValidUsername(false)
+    if (!usernamePattern.test(username) || username.length == null || username.length < 5)
+      setValidUsername(false)
 
     if ((route.params as string) == AuthMethods.SIGNUP.method) {
       if (!(validEmail && validpassword && validPhone && validUsername)) {
@@ -98,9 +100,9 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
               supabase.auth.signOut().finally()
             } else if (res.error) {
               createToast(toast, res.error.message)
-              supabase.auth.signOut().finally()
             } else {
               createToast(toast, "Welcome")
+              store.user.login(res.data.user)
               navigate({ key: "Home", name: "Home" })
             }
             //set store
@@ -108,7 +110,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           })
           .catch(() => {
             createToast(toast, "Error connecting to server, maybe try again later")
-            supabase.auth.signOut()
+            supabase.auth.signOut().finally()
             setStatus("off")
           })
       }
@@ -117,6 +119,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
         createToast(toast, "Invalid username")
       } else {
         //set store
+        store.user.trialLogin(username)
         navigate({ key: "Home", name: "Home" })
       }
     } else {
@@ -129,7 +132,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
 
   return (
     <Screen style={$containerInsets} preset="scroll">
-      <View marginTop="$5" paddingHorizontal="$5" justifyContent="space-between" space="$5">
+      <YStack marginTop="$5" paddingHorizontal="$5" space="$5">
         <Image source={clearLogo} alt="Transparent logo" />
         <Text fontSize="$7" color="$accent">
           {AuthMethods[route.params as string].message}
@@ -137,8 +140,6 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
         <Separator alignSelf="stretch" />
         <Form
           alignItems="center"
-          justifyContent="space-around"
-          marginTop="auto"
           space="$5"
           borderWidth={1}
           borderRadius="$4"
@@ -146,7 +147,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           padding="$8"
           elevationAndroid={5}
           backgroundColor={tokens.color.background}
-          onSubmit={handleAuth}
+          onSubmit={() => handleAuth()}
         >
           <Input
             borderRadius={5}
@@ -228,7 +229,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             </Button>
           </Form.Trigger>
         </Form>
-      </View>
+      </YStack>
     </Screen>
   )
 })

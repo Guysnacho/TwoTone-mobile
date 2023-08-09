@@ -1,4 +1,5 @@
-import { Calendar, Home, Plus, User2, X } from "@tamagui/lucide-icons"
+import { Calendar, Home, LogOut, Plus, User2, X } from "@tamagui/lucide-icons"
+import { useStores } from "app/models"
 import { navigate } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
@@ -16,6 +17,7 @@ export interface FabProps {
 export const Fab = observer((props: FabProps) => {
   const $containerInsets = useSafeAreaInsetsStyle(["bottom", "right"])
   const [open, setOpen] = React.useState(false)
+  const store = useStores()
 
   return (
     <YStack
@@ -67,6 +69,20 @@ export const Fab = observer((props: FabProps) => {
         onPress={() => setOpen(!open)}
       >
         <Calendar
+          style={{
+            top: "50%",
+          }}
+        />
+      </FabBubble>
+      <FabBubble // Logout
+        style={$containerInsets}
+        display={open ? "flex" : "none"}
+        onPress={() => {
+          store.user.logout()
+          navigate({ name: "Landing", key: "Landing" })
+        }}
+      >
+        <LogOut
           style={{
             top: "50%",
           }}
