@@ -79,6 +79,7 @@
     "reactotron-mst": "3.1.4",
     "reactotron-react-js": "^3.3.7",
     "reactotron-react-native": "5.0.3",
+    "swr": "^2.2.0",
     "tamagui": "^1.50.2"
   },
   "devDependencies": {

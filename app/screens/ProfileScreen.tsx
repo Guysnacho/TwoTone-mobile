@@ -1,11 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { Fab, Screen } from "app/components"
+import { Fab } from "app/components"
 import { useStores } from "app/models"
 import { AppStackScreenProps } from "app/navigators"
+import { fetchSotd } from "app/utils/common"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
-import { Button, Group, Image, Text, View, YStack } from "tamagui"
+import { Button, Group, H5, Image, Separator, SizableText, Tabs, Text, YStack, View } from "tamagui"
 const welcomeLogo = require("../../assets/images/logo-filled.png")
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
@@ -25,7 +26,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = observer(function ProfileSc
   // const navigation = useNavigation()
   return (
     <>
-      <Screen style={$topContainerInsets} preset="scroll">
+      <View style={$topContainerInsets}>
         <YStack space paddingTop="$5">
           <Image source={welcomeLogo} style={{ left: "30%" }} />
           <Text color="forestgreen" textAlign="center" marginVertical={5}>
@@ -35,18 +36,46 @@ export const ProfileScreen: FC<ProfileScreenProps> = observer(function ProfileSc
             {store.user.email}
           </Text>
         </YStack>
-        <Group orientation="horizontal">
-          <Group.Item>
-            <Button size={1}>Lists</Button>
-          </Group.Item>
-          <Group.Item>
-            <Button size={1}>SOTD</Button>
-          </Group.Item>
-          <Group.Item>
-            <Button size={1}>Reviews</Button>
-          </Group.Item>
-        </Group>
-      </Screen>
+        <Separator />
+        <Tabs
+          defaultValue="tab1"
+          orientation="horizontal"
+          flexDirection="column"
+          marginHorizontal="auto"
+          marginVertical="$4"
+          width="80%"
+          minHeight={200}
+          borderRadius="$4"
+          borderWidth="$0.25"
+          overflow="hidden"
+          backgroundColor="$accent"
+          borderColor="$borderColor"
+        >
+          <Tabs.List disablePassBorderRadius="bottom" aria-label="Select profile content">
+            <Tabs.Tab flex={1} value="tab1" onPressOut={() => fetchSotd(store)}>
+              <SizableText fontFamily="$body">Lists</SizableText>
+            </Tabs.Tab>
+            <Tabs.Tab flex={1} value="tab2">
+              <SizableText fontFamily="$body">SOTD</SizableText>
+            </Tabs.Tab>
+            <Tabs.Tab flex={1} value="tab3">
+              <SizableText fontFamily="$body">Reviews</SizableText>
+            </Tabs.Tab>
+          </Tabs.List>
+          <Separator />
+          <Tabs.Content value="tab1">
+            <H5>Lists</H5>
+          </Tabs.Content>
+
+          <Tabs.Content value="tab2">
+            <H5>SOTD</H5>
+          </Tabs.Content>
+
+          <Tabs.Content value="tab3">
+            <H5>Reviews</H5>
+          </Tabs.Content>
+        </Tabs>
+      </View>
       <Fab page="Profile" />
     </>
   )
