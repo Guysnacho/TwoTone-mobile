@@ -10,7 +10,7 @@ import { supabase } from "app/utils/supabaseClient"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
-import { Button, Form, Image, Input, Separator, Spinner, Text, View, getTokens } from "tamagui"
+import { Button, Form, Image, Input, Separator, Spinner, Text, YStack, getTokens } from "tamagui"
 const clearLogo = require("../../assets/images/logo.png")
 
 type AuthScreenProps = NativeStackScreenProps<AppStackScreenProps<"Auth">>
@@ -54,7 +54,8 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
     if (emailVal.test(email)) setValidEmail(false)
     if (password.length < 8) setValidPassword(false)
     if (!phone && numberPattern.test(phone)) setValidPhone(false)
-    if (!usernamePattern.test(username) || username.length < 5) setValidUsername(false)
+    if (!usernamePattern.test(username) || username.length == null || username.length < 5)
+      setValidUsername(false)
 
     if ((route.params as string) == AuthMethods.SIGNUP.method) {
       if (!(validEmail && validpassword && validPhone && validUsername)) {
@@ -131,7 +132,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
 
   return (
     <Screen style={$containerInsets} preset="scroll">
-      <View marginTop="$5" paddingHorizontal="$5" justifyContent="space-between" space="$5">
+      <YStack marginTop="$5" paddingHorizontal="$5" space="$5">
         <Image source={clearLogo} alt="Transparent logo" />
         <Text fontSize="$7" color="$accent">
           {AuthMethods[route.params as string].message}
@@ -139,8 +140,6 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
         <Separator alignSelf="stretch" />
         <Form
           alignItems="center"
-          justifyContent="space-around"
-          marginTop="auto"
           space="$5"
           borderWidth={1}
           borderRadius="$4"
@@ -148,7 +147,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           padding="$8"
           elevationAndroid={5}
           backgroundColor={tokens.color.background}
-          onSubmit={handleAuth}
+          onSubmit={() => handleAuth()}
         >
           <Input
             borderRadius={5}
@@ -230,7 +229,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             </Button>
           </Form.Trigger>
         </Form>
-      </View>
+      </YStack>
     </Screen>
   )
 })
