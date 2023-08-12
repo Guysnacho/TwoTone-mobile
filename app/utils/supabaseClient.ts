@@ -3,6 +3,7 @@ import "react-native-url-polyfill/auto"
 import * as SecureStore from "expo-secure-store"
 import { Database } from "app/config/schema"
 
+const tamaguiTarget = process.env.TAMAGUI_TARGET
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL
 

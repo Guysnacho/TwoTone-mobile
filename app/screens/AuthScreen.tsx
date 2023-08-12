@@ -64,15 +64,15 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
         await api.apisauce
           .post<SignUpResponse, APIError>("/api/auth", {
             secret: await fetchSecret(),
-            email: email,
-            password: password,
-            phone: phone,
-            username: username,
+            email,
+            password,
+            phone,
+            username,
           })
           .then(() => {
             // Progress to next page
             supabase.auth
-              .resend({ email: email, type: "signup" })
+              .resend({ email, type: "signup" })
               .then(() => createToast(toast, "Welcome to TwoTone, confirm your email though."))
               .catch(() =>
                 createToast(toast, "Issue sending your confirmation email, please contact support"),
@@ -93,7 +93,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
         createToast(toast, "Invalid login")
       } else {
         await supabase.auth
-          .signInWithPassword({ email: email, password: password })
+          .signInWithPassword({ email, password })
           .then((res) => {
             if (res.data.user && res.data.user.confirmed_at == null) {
               createToast(toast, "Please confirm your email :)")
@@ -152,6 +152,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           <Input
             borderRadius={5}
             width="90%"
+            paddingHorizontal="$4"
             color="$accent"
             placeholder={validEmail ? "Email" : "Enter a valid email"}
             backgroundColor="$accentBg"
@@ -171,6 +172,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           <Input
             borderRadius={5}
             width="90%"
+            paddingHorizontal="$4"
             color="$accent"
             placeholder={validPhone ? "Phone" : "Enter a valid phone"}
             backgroundColor="$accentBg"
@@ -188,6 +190,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           <Input
             borderRadius={5}
             width="90%"
+            paddingHorizontal="$4"
             color="$accent"
             placeholder={validUsername ? "Username" : "Enter a valid username"}
             backgroundColor="$accentBg"
@@ -207,6 +210,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
           <Input
             borderRadius={5}
             width="90%"
+            paddingHorizontal="$4"
             color="$accent"
             placeholder={validpassword ? "Password" : "Enter a valid password"}
             backgroundColor="$accentBg"
@@ -223,7 +227,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
               setValidPassword(true)
             }}
           />
-          <Form.Trigger asChild disabled={status === "submitting"}>
+          <Form.Trigger asChild="except-style" disabled={status === "submitting"}>
             <Button size="$5" icon={status === "submitting" ? () => <Spinner /> : undefined}>
               Submit
             </Button>
