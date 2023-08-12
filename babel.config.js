@@ -1,5 +1,4 @@
 /** @type {import('@babel/core').TransformOptions['plugins']} */
-process.env.TAMAGUI_TARGET='native'
 const plugins = [
   [
     /** Enables baseUrl: "./" option in tsconfig.json to work @see https://github.com/entwicklerstube/babel-plugin-root-import */
