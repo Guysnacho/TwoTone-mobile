@@ -23,7 +23,7 @@
     "clean": "npx react-native-clean-project",
     "clean-all": "npx react-native clean-project-auto",
     "expo:start": "expo start",
-    "expo:start": "expo start --clear",
+    "expo:clean": "expo start --clear",
     "expo:android": "expo start --android",
     "expo:ios": "expo start --ios",
     "expo:web": "expo start --web"

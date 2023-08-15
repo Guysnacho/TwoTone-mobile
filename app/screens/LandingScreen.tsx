@@ -1,18 +1,18 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { useNavigation } from "@react-navigation/native"
 import { Screen } from "app/components"
 import { AppStackScreenProps } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
 import { observer } from "mobx-react-lite"
 import React, { FC } from "react"
-const welcomeLogo = require("../../assets/images/logo-filled.png")
-
-import { useNavigation } from "@react-navigation/native"
 import { Button, Image, Text, XStack, YStack, getTokens } from "tamagui"
 import { AuthMethods } from "./AuthScreen"
+
+const welcomeLogo = require("../../assets/images/logo-filled.png")
+
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
-type LandingScreenProps = NativeStackScreenProps<AppStackScreenProps<"Landing">>
+type LandingScreenProps = AppStackScreenProps<"Landing">
 
 export const LandingScreen: FC<LandingScreenProps> = observer(function LandingScreen() {
   const $topContainerInsets = useSafeAreaInsetsStyle(["top"])
@@ -35,7 +35,8 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
             alignSelf="center"
             size="$5"
             backgroundColor={tokens.color.primary}
-            onPressOut={() => navigation.navigate("Auth", AuthMethods.LOGIN.method)}
+            // @ts-ignore
+            onPressOut={() => navigation.navigate("Auth", { method: AuthMethods.LOGIN.method })}
           >
             Login
           </Button>
@@ -44,7 +45,8 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
             alignSelf="center"
             size="$5"
             backgroundColor={tokens.color.primary}
-            onPressOut={() => navigation.navigate("Auth", AuthMethods.SIGNUP.method)}
+            // @ts-ignore
+            onPressOut={() => navigation.navigate("Auth", { method: AuthMethods.SIGNUP.method })}
           >
             Sign Up
           </Button>
@@ -52,7 +54,8 @@ export const LandingScreen: FC<LandingScreenProps> = observer(function LandingSc
             alignSelf="center"
             size="$5"
             theme="green"
-            onPressOut={() => navigation.navigate("Auth", AuthMethods.TRIAL.method)}
+            // @ts-ignore
+            onPressOut={() => navigation.navigate("Auth", { method: AuthMethods.TRIAL.method })}
           >
             Try it Out
           </Button>

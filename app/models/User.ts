@@ -34,7 +34,18 @@ export const UserModel = types
     },
     logout() {
       // Actually log out if this isn't a trial
-      if (self.authenticated) supabase.auth.signOut().finally()
+      if (self.authenticated) {
+        supabase.auth
+          .signOut()
+          .then((res) => {
+            console.log(res)
+            console.log("successful logout")
+          })
+          .catch((err) => {
+            console.log(err)
+            console.log("Error during signout")
+          })
+      }
       self.authenticated = false
       self.id = undefined
       self.username = undefined

@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { useToastController } from "@tamagui/toast"
 import { Screen } from "app/components"
 import { useStores } from "app/models"
@@ -13,7 +12,7 @@ import React, { FC, useState } from "react"
 import { Button, Form, Image, Input, Separator, Spinner, Text, YStack, getTokens } from "tamagui"
 const clearLogo = require("../../assets/images/logo.png")
 
-type AuthScreenProps = NativeStackScreenProps<AppStackScreenProps<"Auth">>
+type AuthScreenProps = AppStackScreenProps<"Auth">
 
 // Different messages for different flows
 export const AuthMethods = {
@@ -57,7 +56,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
     if (!usernamePattern.test(username) || username.length == null || username.length < 5)
       setValidUsername(false)
 
-    if ((route.params as string) == AuthMethods.SIGNUP.method) {
+    if (route.params.method === AuthMethods.SIGNUP.method) {
       if (!(validEmail && validpassword && validPhone && validUsername)) {
         setStatus("off")
       } else {
@@ -88,7 +87,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             setUsername("")
           })
       }
-    } else if ((route.params as string) == AuthMethods.LOGIN.method) {
+    } else if (route.params.method === AuthMethods.LOGIN.method) {
       if (!(validEmail && validpassword)) {
         createToast(toast, "Invalid login")
       } else {
@@ -114,7 +113,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             setStatus("off")
           })
       }
-    } else if ((route.params as string) == AuthMethods.TRIAL.method) {
+    } else if (route.params.method === AuthMethods.TRIAL.method) {
       if (!validUsername) {
         createToast(toast, "Invalid username")
       } else {
@@ -135,7 +134,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
       <YStack marginTop="$5" paddingHorizontal="$5" space="$5">
         <Image source={clearLogo} alt="Transparent logo" />
         <Text fontSize="$7" color="$accent">
-          {AuthMethods[route.params as string].message}
+          {AuthMethods[route.params.method].message}
         </Text>
         <Separator alignSelf="stretch" />
         <Form
@@ -160,7 +159,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             aria-label="email"
             importantForAutofill="auto"
             display={
-              [AuthMethods.SIGNUP.method, AuthMethods.LOGIN.method].includes(route.params as string)
+              [AuthMethods.SIGNUP.method, AuthMethods.LOGIN.method].includes(route.params.method)
                 ? undefined
                 : "none"
             }
@@ -179,9 +178,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             value={phone}
             aria-label="phone"
             importantForAutofill="auto"
-            display={
-              [AuthMethods.SIGNUP.method].includes(route.params as string) ? undefined : "none"
-            }
+            display={[AuthMethods.SIGNUP.method].includes(route.params.method) ? undefined : "none"}
             onChangeText={(e) => {
               setPhone(e)
               setValidEmail(true)
@@ -198,7 +195,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             aria-label="username"
             importantForAutofill="auto"
             display={
-              [AuthMethods.SIGNUP.method, AuthMethods.TRIAL.method].includes(route.params as string)
+              [AuthMethods.SIGNUP.method, AuthMethods.TRIAL.method].includes(route.params.method)
                 ? undefined
                 : "none"
             }
@@ -218,7 +215,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             aria-label="password"
             importantForAutofill="auto"
             display={
-              [AuthMethods.LOGIN.method, AuthMethods.SIGNUP.method].includes(route.params as string)
+              [AuthMethods.LOGIN.method, AuthMethods.SIGNUP.method].includes(route.params.method)
                 ? undefined
                 : "none"
             }
