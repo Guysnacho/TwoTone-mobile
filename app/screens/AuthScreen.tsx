@@ -158,6 +158,8 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             value={email}
             aria-label="email"
             importantForAutofill="auto"
+            inputMode="email"
+            textContentType="emailAddress"
             display={
               [AuthMethods.SIGNUP.method, AuthMethods.LOGIN.method].includes(route.params.method)
                 ? undefined
@@ -178,6 +180,8 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             value={phone}
             aria-label="phone"
             importantForAutofill="auto"
+            textContentType="telephoneNumber"
+            inputMode="numeric"
             display={[AuthMethods.SIGNUP.method].includes(route.params.method) ? undefined : "none"}
             onChangeText={(e) => {
               setPhone(e)
@@ -194,6 +198,8 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             value={username}
             aria-label="username"
             importantForAutofill="auto"
+            textContentType="username"
+            inputMode="text"
             display={
               [AuthMethods.SIGNUP.method, AuthMethods.TRIAL.method].includes(route.params.method)
                 ? undefined
@@ -213,6 +219,9 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             backgroundColor="$accentBg"
             value={password}
             aria-label="password"
+            textContentType="password"
+            secureTextEntry
+            inputMode="text"
             importantForAutofill="auto"
             display={
               [AuthMethods.LOGIN.method, AuthMethods.SIGNUP.method].includes(route.params.method)
