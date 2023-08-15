@@ -1,7 +1,7 @@
 import { useToastController } from "@tamagui/toast"
 import { Screen } from "app/components"
 import { useStores } from "app/models"
-import { AppStackScreenProps, navigate } from "app/navigators"
+import { AppStackScreenProps } from "app/navigators"
 import { api } from "app/services/api"
 import { APIError, SignUpResponse } from "app/types/auth"
 import { createToast, fetchSecret } from "app/utils/common"
@@ -26,7 +26,7 @@ export const emailVal = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const numberPattern = /^[0-9]+$/
 const usernamePattern = /^[a-zA-Z0-9!@#$%^&*()-_=+[\]{}|;:'",.<>/?`~]+$/ // /^[a-zA-Z0-9_]+$/
 
-export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ route }) {
+export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ navigation, route }) {
   const $containerInsets = useSafeAreaInsetsStyle(["top", "left", "right"])
   const tokens = getTokens()
   const toast = useToastController()
@@ -76,7 +76,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
               .catch(() =>
                 createToast(toast, "Issue sending your confirmation email, please contact support"),
               )
-              .finally(() => navigate({ key: "Landing", name: "Landing" }))
+              .finally(() => navigation.navigate("Landing"))
           })
           .catch((err) => {
             createToast(toast, err.message)
@@ -102,7 +102,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
             } else {
               createToast(toast, "Welcome")
               store.user.login(res.data.user)
-              navigate({ key: "Home", name: "Home" })
+              navigation.navigate("Home")
             }
             //set store
             //route to home screen
@@ -119,7 +119,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ ro
       } else {
         //set store
         store.user.trialLogin(username)
-        navigate({ key: "Home", name: "Home" })
+        navigation.navigate("Home")
       }
     } else {
       createToast(toast, "Error in auth flow, maybe try again later")

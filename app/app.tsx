@@ -24,8 +24,10 @@ import "./utils/ignoreWarnings"
 import * as storage from "./utils/storage"
 
 import { ToastProvider } from "@tamagui/toast"
+import { SWRConfig } from "swr"
 import { TamaguiProvider } from "tamagui"
 import TamaConfig from "../tamagui.config"
+import { AppState } from "react-native"
 
 // Set up Reactotron, which is a free desktop app for inspecting and debugging
 // React Native apps. Learn more here: https://github.com/infinitered/reactotron
@@ -43,6 +45,20 @@ setupReactotron({
 })
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
+
+// export const localStorageProvider = () => {
+//   // When initializing, we restore the data from `localStorage` into a map.
+//   const cache =
+
+//   // Before unloading the app, we write back all the data into `localStorage`.
+//   window.addEventListener("beforeunload", () => {
+//     const appCache = JSON.stringify(Array.from(cache..entries()))
+//     localStorage.setItem("app-cache", appCache)
+//   })
+
+//   // We still use the map for write & read for performance.
+//   return map
+// }
 
 // Web linking configuration
 const prefix = Linking.createURL("/")

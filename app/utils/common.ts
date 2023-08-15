@@ -18,13 +18,36 @@ export const fetchSecret = async () => {
 /**
  * Fetch songs of the day for user
  */
-export const fetchSotd = (store: RootStore, page?: number) => {
-  const songs = supabase
-    .from("sotd").fetch({})
-    .select("song_id, content, created_at, updated_at")
-    .eq("user_id", store.user.id)
-    .order("created_at").limit(15);
+export const fetchSotd = async (store: RootStore, userId?: string) => {
+  console.log(userId)
+
+  return await supabase
+    .from("sotd")
+    .select(`id, song (id, title, album, artists), content, created_at, updated_at`)
+    .eq("user_id", userId || store.user.id)
+    .order("created_at")
+    .limit(15)
+    .then((res) => {
+      return {
+        data: res.data,
+        message: res.error?.message,
+      }
+    })
 }
+
+// /**
+//  * SWR Fetcher
+//  */
+// export const fetcher = (key: string) => {
+//   const songs = await supabase
+//     .from("sotd")
+//     .select("song_id, content, created_at, updated_at")
+//     .eq("user_id", store.user.id)
+//     .order("created_at")
+//     .limit(15)
+
+//   console.log(songs)
+// }
 
 /**
  * Create toast message
