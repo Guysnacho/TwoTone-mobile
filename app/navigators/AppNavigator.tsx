@@ -32,7 +32,7 @@ export type AppStackParamList = {
   // 🔥 Your screens go here
   Landing: undefined
   Home: undefined
-  Profile: undefined
+  Profile: { user: string }
   Auth: { method: string }
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -55,7 +55,7 @@ const AppStack = observer(function AppStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, navigationBarColor: colors.background }}>
       <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-      <Stack.Screen name="Profile" component={Screens.ProfileScreen} />
+      <Stack.Screen name="Profile" component={Screens.ProfileScreen} initialParams={{ user: "" }} />
       {/** 🔥 Your screens go here */}
       <Stack.Screen name="Landing" component={Screens.LandingScreen} />
       <Stack.Screen name="Home" component={Screens.HomeScreen} />
