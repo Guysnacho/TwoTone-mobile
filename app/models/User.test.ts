@@ -1,12 +1,7 @@
-import { UserModel } from "./User"
+import { createUserDefaultModel } from "./User"
 
 test("can be created", () => {
-  const instance = UserModel.create({
-    authenticated: false,
-    id: "test",
-    username: "test",
-    email: "test",
-    createdAt: "test",
-  })
+  const instance = createUserDefaultModel()
+  
   expect(instance).toBeTruthy()
 })

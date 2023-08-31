@@ -54,7 +54,7 @@ export const fetchSotd = async (store: RootStore, userId?: string) => {
  */
 export const createToast = (toast: any, title: string, duration?: number) => {
   if (duration) {
-    toast.show(title, { duration: duration, native: true })
+    toast.show(title, { duration, native: true })
   } else {
     toast.show(title, { native: true })
   }
