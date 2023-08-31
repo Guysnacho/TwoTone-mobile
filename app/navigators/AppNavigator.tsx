@@ -34,7 +34,8 @@ export type AppStackParamList = {
   Home: undefined
   Profile: { user: string }
   Auth: { method: string }
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Search: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -60,7 +61,8 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="Landing" component={Screens.LandingScreen} />
       <Stack.Screen name="Home" component={Screens.HomeScreen} />
       <Stack.Screen name="Auth" component={Screens.AuthScreen} />
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="Search" component={Screens.SearchScreen} />
+			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })

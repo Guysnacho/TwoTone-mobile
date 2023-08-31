@@ -1,4 +1,4 @@
-import { Calendar, Home, LogOut, Plus, User2, X } from "@tamagui/lucide-icons"
+import { Calendar, Home, LogOut, Plus, Search, User2, X } from "@tamagui/lucide-icons"
 import { useStores } from "app/models"
 import { navigate } from "app/navigators"
 import { useSafeAreaInsetsStyle } from "app/utils/useSafeAreaInsetsStyle"
@@ -7,14 +7,14 @@ import * as React from "react"
 import { Button, YStack, styled } from "tamagui"
 
 export interface FabProps {
-  page: "Home" | "Profile"
+  page?: "Home" | "Profile"
 }
 
 /**
  * Floating action button for navigating the app. I don't want a navbar 😌
  * @todo - Add animations for expansion and closing
  */
-export const Fab = observer((props: FabProps) => {
+export const Fab = observer((props?: FabProps) => {
   const $containerInsets = useSafeAreaInsetsStyle(["bottom", "right"])
   const [open, setOpen] = React.useState(false)
   const store = useStores()
@@ -27,21 +27,24 @@ export const Fab = observer((props: FabProps) => {
       justifyContent="center"
       alignItems="flex-end"
       marginHorizontal={3}
+      bottom={open ? "$6" : undefined}
       space
     >
-      {/* <FabBubble // Search
-            style={$containerInsets}
-            display={open ? "flex" : "none"}
-            onPress={() => setOpen(!open)}
-          >
-            <Search style={{
-          top: "50%"
-        }} />
-          </FabBubble> */}
+      <FabBubble // Search
+        style={$containerInsets}
+        display={open ? "flex" : "none"}
+        onPress={() => navigate({ name: "Search", key: "Search" })}
+      >
+        <Search
+          style={{
+            top: "50%",
+          }}
+        />
+      </FabBubble>
       <FabBubble // Profile or Home Page
         style={$containerInsets}
         display={open ? "flex" : "none"}
-        onTouchEnd={() =>
+        onPress={() =>
           navigate({
             key: props.page === "Profile" ? "Home" : "Profile",
             name: props.page === "Profile" ? "Home" : "Profile",
@@ -55,7 +58,7 @@ export const Fab = observer((props: FabProps) => {
             }}
           />
         ) : null}
-        {props.page === "Profile" ? (
+        {props.page === "Profile" || !props.page ? (
           <Home
             style={{
               top: "50%",

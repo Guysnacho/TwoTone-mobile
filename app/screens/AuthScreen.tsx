@@ -76,7 +76,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ na
               .catch(() =>
                 createToast(toast, "Issue sending your confirmation email, please contact support"),
               )
-              .finally(() => navigation.navigate("Landing"))
+              .finally(() => navigation.replace("Landing"))
           })
           .catch((err) => {
             createToast(toast, err.message)
