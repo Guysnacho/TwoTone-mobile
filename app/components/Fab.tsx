@@ -29,6 +29,7 @@ export const Fab = observer((props?: FabProps) => {
       marginHorizontal={3}
       bottom={open ? "$6" : undefined}
       space
+      zIndex={5000}
     >
       <FabBubble // Search
         style={$containerInsets}
@@ -128,6 +129,7 @@ const FabBubble = styled(Button, {
   paddingVertical: "auto",
   top: 70,
   aspectRatio: 1,
+  zIndex: 5,
   size: 0.5,
   circular: true,
   noTextWrap: true,

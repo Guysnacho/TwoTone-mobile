@@ -1,7 +1,7 @@
-import { SongModel } from "./Song"
+import { createSongDefaultModel } from "./Song"
 
 test("can be created", () => {
-  const instance = SongModel.create({})
+  const instance = createSongDefaultModel()
 
   expect(instance).toBeTruthy()
 })
