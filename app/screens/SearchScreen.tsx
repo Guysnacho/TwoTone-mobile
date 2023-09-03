@@ -10,7 +10,6 @@ import { observer } from "mobx-react-lite"
 import { getSnapshot } from "mobx-state-tree"
 import React, { FC, useEffect, useState } from "react"
 import { Button, Form, Input, Spinner, YStack, getTokens } from "tamagui"
-const clearLogo = require("../../assets/images/logo.png")
 
 type SearchScreenProps = AppStackScreenProps<"Search">
 
