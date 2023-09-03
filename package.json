@@ -40,6 +40,7 @@
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.0.2",
+    "@shopify/flash-list": "1.4.3",
     "@supabase/supabase-js": "^2.26.0",
     "@tamagui/babel-plugin": "^1.50.2",
     "@tamagui/config": "^1.50.2",
