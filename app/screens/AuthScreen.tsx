@@ -104,8 +104,8 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ na
               store.user.login(res.data.user)
               navigation.navigate("Home")
             }
-            //set store
-            //route to home screen
+            // set store
+            // route to home screen
           })
           .catch(() => {
             createToast(toast, "Error connecting to server, maybe try again later")
@@ -117,7 +117,7 @@ export const AuthScreen: FC<AuthScreenProps> = observer(function AuthScreen({ na
       if (!validUsername) {
         createToast(toast, "Invalid username")
       } else {
-        //set store
+        // set store
         store.user.trialLogin(username)
         navigation.navigate("Home")
       }
